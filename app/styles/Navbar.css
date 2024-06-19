@@ -1,0 +1,109 @@
+.ul_tag {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.li_tag {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+    color: grey;
+    padding: 0 10px 0 10px;
+}
+
+.GS_Logo {
+    color: black;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.GS_Logo:hover {
+    cursor: pointer;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Logo_img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.link {
+    text-decoration: none;
+    list-style: none;
+    color: grey;
+}
+
+.link:hover {
+    text-decoration: underline;
+    color: black;
+}
+
+@media (max-width: 822px) {
+    header {
+        width: 95vw;
+    }
+}
+
+@media (max-width: 770px) {
+    header {
+        width: 95vw;
+    }
+}
+
+@media (max-width: 720px) { 
+    header {
+        width: 690px;
+    }
+}
+
+@media (max-width: 545px) {
+    header {
+        width: 95vw;
+    }
+}
+
+@media (max-width: 431px) {
+    header {
+        width: 90vw;
+    }
+}
+
+@media (max-width: 415px) {
+    header {
+        width: 90vw;
+    }
+}
+
+@media (max-width: 380px) {
+    header {
+        width: 90vw;
+    }
+}
+
+@media (max-width: 365px) {
+    header {
+        width: 90vw;
+    }
+}
+
+@media (max-width: 344px) { 
+    header {
+        width: 320px;
+    }
+}

@@ -1,0 +1,79 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.GS_Logo {
+    color: black;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.Footer {
+    background-color: aliceblue;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    align-items: center;
+    margin: 0;
+}
+
+@media (max-width: 822px) {
+    .Footer {
+        width: 95vw;
+    }
+}
+
+@media (max-width: 770px) {
+    .Footer {
+        width: 95vw;
+    }
+}
+
+@media (max-width: 720px) { 
+    .Footer {
+        width: 690px;
+    }
+}
+
+@media (max-width: 545px) {
+    .Footer {
+        width: 95vw;
+    }
+}
+
+@media (max-width: 431px) {
+    .Footer {
+        width: 90vw;
+    }
+}
+
+@media (max-width: 415px) {
+    .Footer {
+        width: 90vw;
+    }
+}
+
+@media (max-width: 380px) {
+    .Footer {
+        width: 90vw;
+    }
+}
+
+@media (max-width: 375px) { 
+    .Footer {
+        width: 375px;
+    }
+}
+
+@media (max-width: 365px) {
+    .Footer {
+        width: 90vw;
+    }
+}
+
+@media (max-width: 344px) { 
+    .Footer {
+        width: 320px;
+    }
+}
