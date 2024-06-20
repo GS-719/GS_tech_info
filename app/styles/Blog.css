@@ -21,6 +21,10 @@
     padding-left: 50px;
 }
 
+.IMG {
+    width: 50vw;
+}
+
 .main_content{
     display: flex;
     justify-content: center;
