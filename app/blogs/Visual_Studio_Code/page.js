@@ -3,6 +3,8 @@ import Banner from '@/app/Components/Banner';
 import Note from '@/app/Components/Note';
 import "../../styles/Blog.css";
 import Link from "next/link";
+import Auto_Complete from "@/Img/VS_Code_the_Ultimate_editor/Auto_Complete.png";
+import Extensions_img from "@/Img/VS_Code_the_Ultimate_editor/Extensions.png";
 
 
 // Tabnine
@@ -47,6 +49,7 @@ const page = () => {
                                     <li className='li_tag_privacy'>Than click on install.</li>
                                     <li className='li_tag_privacy'>Your Extension will be installed.</li>
                                 </ol>
+                                <img src={Extensions_img.src} alt="Extensions" className="IMG" />
                             </div>
                             <br />
                             <br />
@@ -58,9 +61,8 @@ const page = () => {
                                 <br />
                                 <p>Auto Complete helps you to Complete the works.</p>
                                 <p>you just need to type first some letters and hit enter.</p>
-                                <div>
-                                    {/* <VideoPlayer Path="./Auto_Complete.mp4" /> */}
-                                </div>
+                                <br/>
+                                <img src={Auto_Complete.src} alt='Auto_Complete' className='IMG' />
                             </div>
                             <br />
                             <br />
