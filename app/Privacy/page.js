@@ -74,7 +74,7 @@ const page = () => {
                         <div>
                             <h2>Web Analytics</h2>
                             <br />
-                            <p>We are vercel using web analytics to monitor our website. We will collect information about your country, operating system, browser, and the page you visit on our site.</p>
+                            <p>We are using vercel web analytics to monitor our website. We will collect information about your country, operating system, browser, and the page you visit on our site.</p>
                         </div>
                         <br />
                         <br />
