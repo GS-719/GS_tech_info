@@ -4,7 +4,7 @@ import Note from '@/app/Components/Note';
 import "../../styles/Blog.css";
 import Link from "next/link";
 import Auto_Complete from "../../../Img/VS_Code_the_ultimate_editor/Auto_Complete.png";
-import Extensions_img from "../../../Img/VS_Code_the_Ultimate_editor/Extensions.png";
+import Extensions_img from "../../../Img/VS_Code_the_ultimate_editor/Extensions.png";
 
 
 // Tabnine
