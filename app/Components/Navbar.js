@@ -25,9 +25,6 @@ const Navbar = () => {
                         <li className='li_tag'>
                             <Link className='link' href="mailto:gstechinfo719@gmail.com">Contact US</Link>
                         </li>
-                        <li className='li_tag'>
-                            <Link className='link' href="/Privacy">Privacy Policy</Link>
-                        </li>
                     </ul>
                 </nav>
             </header>
