@@ -1,5 +1,5 @@
 import React from 'react'
-import "../styles/Privacy.css"
+import "../styles/Privacy_and_TOS.css"
 import Link from "next/link";
 
 const page = () => {
