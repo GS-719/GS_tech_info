@@ -14,6 +14,12 @@ const page = () => {
         c, d = 15, 0   # "c" contains "15" and "d" contains "0".
     `
 
+    // bool
+    const bool_1 = `
+        a = True
+        b = False
+    `
+
     // float
     const float = `
         a = 1.2 
@@ -133,6 +139,7 @@ const page = () => {
                                 <p>Example:</p>
                                 <br />
                                 <ol className='ul_tag_Privacy'>
+                                    <p>a = "Hello"</p>
                                     <br />
                                     <p>Where.</p>
                                     <li className='li_tag_privacy'>a is a variable (contains the string).</li>
@@ -170,6 +177,8 @@ const page = () => {
                                 <h2>Bool</h2>
                                 <br />
                                 <p>bool is a datatype in python which is used to store truth value in a variable. The truth value is in the form of True or False.</p>
+                                <br/>
+                                {<CodeBox code={bool_1}/>}
                             </div>
                             <br />
                             <br />
@@ -209,6 +218,11 @@ const page = () => {
                                 <p>Tuple is a datatype in python which is ordered, indexed, and immutable. it can store  different - different types of data, it is almost same as list but it is immutable and list is mutable.</p>
                                 <p>Once a tuple is created you cannot modify it's elements such as add, remove, or change.</p>
                                 <p>A tuple is enclosed with round brackes.</p>
+                                <ul className='ul_tag_Privacy'>
+                                    <li className='li_tag_privacy'><strong>Ordered</strong> a tuple is ordered, which means every element in a tuple is asigned within order.</li>
+                                    <li className='li_tag_privacy'><strong>indexed</strong> a tuple is indexed, which means you can access its elements by indexing.</li>
+                                    <li className='li_tag_privacy'><strong>immutable</strong> a tuple is immutable, which means you cannot modify (add, remove, or change) its elements after its creation.</li>
+                                </ul>
                                 <br />
                                 <p>Example:</p>
                                 {<CodeBox code={tuple_1} />}
@@ -221,6 +235,12 @@ const page = () => {
                                 <br/>
                                 <p>A set is a datatype in python which is unordered, unchangeable, and unindexed. it can store different-different types of data, it is almost same as list or tuple, with minner differences.</p>
                                 <p>A set is enclosed with curly-braceses.</p>
+                                <br/>
+                                <ul className='ul_tag_Privacy'>
+                                    <li className='li_tag_privacy'><strong>Unordered</strong> a set is a unordered, which means the elements in a set has no any asigned order</li>
+                                    <li className='li_tag_privacy'><strong>Unchangeable</strong> a set is a unchangeable, which means you cannot change the elements of set after its creation.</li>
+                                    <li className='li_tag_privacy'><strong>unindexed</strong> a set is a unindexed, which means indexing is not working in the case of set.</li>
+                                </ul>
                                 <br/>
                                 <p>Example:</p>
                                 {<CodeBox code={set_1}/>}
@@ -238,3 +258,4 @@ const page = () => {
 }
 
 export default page
+
