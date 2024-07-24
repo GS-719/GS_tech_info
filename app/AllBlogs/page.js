@@ -3,7 +3,7 @@ import "../styles/AllBlogs.css"
 import Image from "next/image";
 import Windows_VS_Linux from "../../Img/Title/Windows_VS_Linux.png";
 import VS_code from "../../Img/Title/VS_code.png";
-import Datatype_P1 from "../../Img/Title/Datatypes_in_python_Part_1.png"
+import Datatype_P1 from "@/Img/Title/Datatypes_in_python_Part_1.png";
 import Link from "next/link";
 
 const page = () => {
