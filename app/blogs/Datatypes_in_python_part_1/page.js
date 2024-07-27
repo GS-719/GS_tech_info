@@ -10,7 +10,9 @@ const page = () => {
     // Int
     const int = `
         a = 719        # "a" is a variable which contains "719" as an integer.
+
         b = -786       # "b" is a variable which contains "-786" as an interger.
+        
         c, d = 15, 0   # "c" contains "15" and "d" contains "0".
     `
 
@@ -258,4 +260,3 @@ const page = () => {
 }
 
 export default page
-
