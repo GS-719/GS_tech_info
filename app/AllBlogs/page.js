@@ -17,13 +17,19 @@ const page = () => {
                             <h1 className='E_Title'>Window VS Linux for programmer in 2024</h1>
                         </div>
                     </Link>
+                </div>
+                <hr />
+                <div className='Row'>
                     <Link href="blogs/Visual_Studio_Code" >
                         <div className='Element'>
                             <Image src={VS_code} alt="error" className='E_IMG' />
                             <h1 className='E_Title'>VS Code the Ultimate Code editor</h1>
                         </div>
                     </Link>
-                    <Link href="blogs/Datatypes_in_python_part_1" >
+                </div>
+                <hr />
+                <div className='Row'>
+                    <Link href="blogs/Datatypes_in_python_Part_1" >
                         <div className='Element'>
                             <Image src={Datatype_P1} alt="error" className='E_IMG' />
                             <h1 className='E_Title'>Datatypes in python Part 1</h1>
