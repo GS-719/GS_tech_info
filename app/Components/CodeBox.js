@@ -4,7 +4,7 @@ import "../styles/CodeBox.css";
 
 const CodeBox = ({ code }) => {
   return (
-    <div className="codeBox">
+    <div className='codeBox'>
       <pre>
         <code>{code}</code>
       </pre>
