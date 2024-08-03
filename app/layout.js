@@ -4,7 +4,7 @@ import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import Google_Adsense from "./Components/Google_Adsense";
 import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +18,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <meta name="google-adsense-account" content="ca-pub-3294386833309868" />
+        <meta name="google-site-verification" content="1fckTI0MM1h8fwBgsl084W1Ew-Y4wrbyTF_MOhGpmjQ" />
       </head>
       <body className={inter.className}>{<Navbar />}{children}{<Footer />} {<Analytics />} {< SpeedInsights />}</body>
       <Google_Adsense />
