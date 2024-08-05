@@ -13,6 +13,7 @@
     "@vercel/speed-insights": "^1.0.12",
     "next": "14.2.3",
     "next-google-adsense": "^1.0.9",
+    "next-seo": "^6.5.0",
     "next-video": "^1.1.0",
     "next-videos": "1.4.1",
     "react": "^18",
