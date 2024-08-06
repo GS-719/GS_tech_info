@@ -11,7 +11,7 @@ const Navbar = () => {
                 <Link href="/" className='link'>
                     <div className="logo">
                         <Image src={Logo} className='Logo_img' />
-                        <p className='GS_Logo'>GS_tech-info</p>
+                        <p className='GS_Logo'>GS Tech Info</p>
                     </div>
                 </Link>
                 <nav>
@@ -34,3 +34,4 @@ const Navbar = () => {
 }
 
 export default Navbar
+
