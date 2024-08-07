@@ -12,15 +12,15 @@ const Home = () => {
       <Head>
         <NextSeo
           title="GS Tech Info"
-          description="The GS_tech-info provides you 100% true information about computers"
+          description="The GS Tech Info provides you 100% true information about computers"
           canonical="https://gs-tech-info.vercel.app/"
           openGraph={{
             url: 'https://gs-tech-info.vercel.app/',
             title: 'GS Tech Info',
-            description: 'The GS_tech-info provides you 100% true information about computers',
+            description: 'The GS Tech Info provides you 100% true information about computers',
             images: [
               {
-                url: 'https://gs-tech-info.vercel.app/LOGO.png',
+                url: 'https://gs-tech-info.vercel.app/icon.png',
                 width: 800,
                 height: 600,
                 alt: 'Logo',
