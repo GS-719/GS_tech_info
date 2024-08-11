@@ -4,6 +4,8 @@ import "../../styles/Blog.css";
 import Banner from '@/app/Components/Banner';
 import Note from '@/app/Components/Note';
 import Link from 'next/link';
+import Head from 'next/head';
+import { NextSeo } from 'next-seo';
 
 const page = () => {
 
@@ -77,6 +79,34 @@ const page = () => {
 
     return (
         <>
+            <Head>
+                <NextSeo
+                    title="Datatypes in python"
+                    description="What is Datatypes in python?"
+                    canonical="https://gs-tech-info.vercel.app/blogs/Datatypes_in_python_part_1"
+                    openGraph={{
+                        url: 'https://gs-tech-info.vercel.app/blogs/Datatypes_in_python_part_1',
+                        title: 'GS Tech Info',
+                        description: 'The GS Tech Info provides you 100% true information about computers',
+                        type: "GS Tech Info Blog Page",
+                        images: [
+                          {
+                            url: 'https://gs-tech-info.vercel.app/icon.png',
+                            width: 800,
+                            height: 600,
+                            alt: 'Logo',
+                            type: 'image/jpeg/png',
+                          },
+                        ],
+                        siteName: 'GS Tech Info',
+                      }}
+                    twitter={{
+                        handle: '@handle',
+                        site: '@site',
+                        cardType: 'summary_large_image',
+                    }}
+                />
+            </Head>
             {<Banner Title="DataTypes in Python Part 1" />}
             <div className='main'>
                 <div className='gridContainer'>
@@ -179,8 +209,8 @@ const page = () => {
                                 <h2>Bool</h2>
                                 <br />
                                 <p>bool is a datatype in python which is used to store truth value in a variable. The truth value is in the form of True or False.</p>
-                                <br/>
-                                {<CodeBox code={bool_1}/>}
+                                <br />
+                                {<CodeBox code={bool_1} />}
                             </div>
                             <br />
                             <br />
@@ -229,23 +259,23 @@ const page = () => {
                                 <p>Example:</p>
                                 {<CodeBox code={tuple_1} />}
                             </div>
-                            <br/>
-                            <br/>
-                            <br/>
+                            <br />
+                            <br />
+                            <br />
                             <div id='set'>
                                 <h2>Set:</h2>
-                                <br/>
+                                <br />
                                 <p>A set is a datatype in python which is unordered, unchangeable, and unindexed. it can store different-different types of data, it is almost same as list or tuple, with minner differences.</p>
                                 <p>A set is enclosed with curly-braceses.</p>
-                                <br/>
+                                <br />
                                 <ul className='ul_tag_Privacy'>
                                     <li className='li_tag_privacy'><strong>Unordered</strong> a set is a unordered, which means the elements in a set has no any asigned order</li>
                                     <li className='li_tag_privacy'><strong>Unchangeable</strong> a set is a unchangeable, which means you cannot change the elements of set after its creation.</li>
                                     <li className='li_tag_privacy'><strong>unindexed</strong> a set is a unindexed, which means indexing is not working in the case of set.</li>
                                 </ul>
-                                <br/>
+                                <br />
                                 <p>Example:</p>
-                                {<CodeBox code={set_1}/>}
+                                {<CodeBox code={set_1} />}
                             </div>
 
                             <br />
