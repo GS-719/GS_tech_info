@@ -3,8 +3,10 @@ import Banner from '@/app/Components/Banner';
 import Note from '@/app/Components/Note';
 import "../../styles/Blog.css";
 import Link from "next/link";
-import Auto_Complete from "../../../Img/VS_Code_the_ultimate_editor/Auto_Complete.png";
-import Extensions_img from "../../../Img/VS_Code_the_ultimate_editor/Extensions.png";
+import Auto_Complete from "../../../Img/VS_Code_the_Ultimate_editor/Auto_Complete.png";
+import Extensions_img from "../../../Img/VS_Code_the_Ultimate_editor/Extensions.png";
+import Head from 'next/head';
+import { NextSeo } from 'next-seo';
 
 
 // Tabnine
@@ -15,6 +17,34 @@ import Extensions_img from "../../../Img/VS_Code_the_ultimate_editor/Extensions.
 const page = () => {
     return (
         <>
+            <Head>
+                <NextSeo
+                    title="Visual Studio Code"
+                    description="Visual Studio Code the ultimate code editor"
+                    canonical="https://gs-tech-info.vercel.app/blogs/Visual_Studio_Code"
+                    openGraph={{
+                        url: 'https://gs-tech-info.vercel.app/blogs/Visual_Studio_Code',
+                        title: 'Visual Studio Code',
+                        description: "Visual Studio Code the ultimate code editor",
+                        type: "GS Tech Info Blog Page",
+                        images: [
+                            {
+                                url: 'https://gs-tech-info.vercel.app/icon.png',
+                                width: 800,
+                                height: 600,
+                                alt: 'Logo',
+                                type: 'image/jpeg/png',
+                            },
+                        ],
+                        siteName: 'GS Tech Info',
+                    }}
+                    twitter={{
+                        handle: '@handle',
+                        site: '@site',
+                        cardType: 'summary_large_image',
+                    }}
+                />
+            </Head>
             {<Banner Title="Visual Studio Code The Ultimate Code/Text Editor" />}
             <div className='main'>
                 <div className='gridContainer'>
@@ -41,7 +71,7 @@ const page = () => {
                                     <li className="li_tag_privacy"><Link href="https://marketplace.visualstudio.com/items?itemName=ms-python.python" target='_blank'><strong>Python</strong></Link> is a Extension provides a functionalityto write python code into VS Code.</li>
                                     <li className="li_tag_privacy"><Link href="https://marketplace.visualstudio.com/items?itemName=rodrigovallades.es7-react-js-snippets" target='_blank'><strong>Es7</strong></Link> helps you to write javascript, javascript react, Typesecript, Typesecript react code. you also create a whole react Component by using this Extension.</li>
                                 </ul>
-                                <br/>
+                                <br />
                                 <p><strong>To install or add more Extensions:</strong></p>
                                 <ol className='paddingLeft'>
                                     <li className='li_tag_privacy'>Go to Extensions tab at the right side of the window.</li>
@@ -61,7 +91,7 @@ const page = () => {
                                 <br />
                                 <p>Auto Complete helps you to Complete the works.</p>
                                 <p>you just need to type first some letters and hit enter.</p>
-                                <br/>
+                                <br />
                                 <img src={Auto_Complete.src} alt='Auto_Complete' className='IMG' />
                             </div>
                             <br />
@@ -69,29 +99,29 @@ const page = () => {
                             <br />
                             <div>
                                 <h2>Terminal</h2>
-                                <br/>
+                                <br />
                                 <h3>VS Code have their own terminal.</h3>
-                                <br/>
+                                <br />
                                 <p>VS Code have their integreated terminal which runs on the root directory of you project.</p>
                                 <p>You do not need any external terminal to run your files.</p>
                                 <p>You can use terminal in multiply tabs.</p>
                                 <p>You can split your terminal and use side by side.</p>
                             </div>
-                            <br/>
-                            <br/>
-                            <br/>
+                            <br />
+                            <br />
+                            <br />
                             <div>
                                 <h2>Hierachy</h2>
-                                <br/>
+                                <br />
                                 <h3>VS Code have their own Hierachy Panel</h3>
                                 <p>You are able to create or edit file in Hierachy panel, You do not need to go in file explorer.</p>
                             </div>
-                            <br/>
-                            <br/>
-                            <br/>
+                            <br />
+                            <br />
+                            <br />
                             <div>
                                 <h2>AI Tools</h2>
-                                <br/>
+                                <br />
                                 <h3>You can use many AI tools in VS Code</h3>
                                 <p>You can increase your productivity by using these AI tools in VS Code.</p>
                                 <p>You can add or install AI Tools by install Extensions in your VS Code.</p>
@@ -101,12 +131,12 @@ const page = () => {
                                     <li className='li_tag_privacy'><strong>Black Box AI</strong> It is a free AI Tools which is used to generate code, you needs a internet Connection to use Black Box AI. Just write a prompt to generate Code. you can install it from <Link href="">Black Box AI</Link>. It is just like Chat Gpt but it is specialy designed for generating Code</li>
                                 </ul>
                             </div>
-                            <br/>
-                            <br/>
-                            <br/>
+                            <br />
+                            <br />
+                            <br />
                             <div>
                                 <h2>Customization</h2>
-                                <br/>
+                                <br />
                                 <h3>The Visual Studio Code Provides a lot of Customization. You can change the whole editor by using these customization.</h3>
                                 <ul className='ul_tag_Privacy'>
                                     <li className='li_tag_privacy'>You can change of add new keyboard shortcuts in Visual Studio Code.</li>
@@ -119,22 +149,22 @@ const page = () => {
                                     <ul className='ul_tag_Privacy'>
                                         <li>For icons:</li>
                                         <p><Link href="https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme" target='_blank'><strong>Material Icon Theme</strong></Link> is a Extension which provides a nice icons to your file according to file name or Extension</p>
-                                        <br/>
+                                        <br />
                                         <li>For Workspace:</li>
                                         <p><Link href="https://marketplace.visualstudio.com/items?itemName=CamilaMartinezBedoya.pro-hacker-theme"><strong>Pro Hacker Theme</strong></Link> is a Extension which gives you the feel like a hacker. It is a dark theme. </p>
 
-                                        <br/>
+                                        <br />
                                         <p>And by default there are many themes are available in Visual Studio Code.</p>
                                     </ul>
                                     <li className='li_tag_privacy'>You can install themes by Extension as many as you want.</li>
                                 </ul>
                             </div>
-                            <br/>
-                            <br/>
-                            <br/>
+                            <br />
+                            <br />
+                            <br />
                             <div>
                                 <h2>Flexibility</h2>
-                                <br/>
+                                <br />
                                 <h3>VS Code provides Flexibility to you work and user experience.</h3>
                                 <ul className='ul_tag_Privacy'>
                                     <li className='li_tag_privacy'>You can create or edit different-different types of files at the same time.</li>
