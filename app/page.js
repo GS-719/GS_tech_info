@@ -18,6 +18,7 @@ const Home = () => {
             url: 'https://gs-tech-info.vercel.app/',
             title: 'GS Tech Info',
             description: 'The GS Tech Info provides you 100% true information about computers',
+            type: "Website",
             images: [
               {
                 url: 'https://gs-tech-info.vercel.app/icon.png',
@@ -39,8 +40,8 @@ const Home = () => {
       </Head>
       <div className='Main'>
         <section className='Left_Section'>
-          <h1 className='Main_title'> The GS_tech-info provides you 100% true information about computers</h1>
-          <p className='Text'>The GS_tech-info serves you the 100% accurate information about computer technologies, and sky rocket your computer journey</p>
+          <h1 className='Main_title'> The GS Tech Info provides you 100% true information about computers</h1>
+          <p className='Text'>The GS Tech Info serves you the 100% accurate information about computer technologies, and sky rocket your computer journey</p>
           <Link href="/AllBlogs">
             <button className='Blog_Btn'>Blogs</button>
           </Link>
