@@ -87,7 +87,7 @@ const page = () => {
                     openGraph={{
                         url: 'https://gs-tech-info.vercel.app/blogs/Datatypes_in_python_part_1',
                         title: 'GS Tech Info',
-                        description: 'The GS Tech Info provides you 100% true information about computers',
+                        description: "What is Datatypes in python?",
                         type: "GS Tech Info Blog Page",
                         images: [
                           {
