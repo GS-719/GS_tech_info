@@ -2,10 +2,40 @@ import React from 'react'
 import "../../styles/Blog.css";
 import Banner from "../../Components/Banner";
 import Note from "../../Components/Note"
+import Head from 'next/head';
+import { NextSeo } from 'next-seo';
 
 const page = () => {
     return (
         <>
+        <Head>
+                <NextSeo
+                    title="Windows VS Linux"
+                    description="Windows VS Linux For Programmers in 2024"
+                    canonical="https://gs-tech-info.vercel.app/blogs/window-vs-linux"
+                    openGraph={{
+                        url: 'https://gs-tech-info.vercel.app/blogs/window-vs-linux',
+                        title: 'Windows VS Linux',
+                        description: "Windows VS Linux For Programmers in 2024",
+                        type: "GS Tech Info Blog Page",
+                        images: [
+                          {
+                            url: 'https://gs-tech-info.vercel.app/icon.png',
+                            width: 800,
+                            height: 600,
+                            alt: 'Logo',
+                            type: 'image/jpeg/png',
+                          },
+                        ],
+                        siteName: 'GS Tech Info',
+                      }}
+                    twitter={{
+                        handle: '@handle',
+                        site: '@site',
+                        cardType: 'summary_large_image',
+                    }}
+                />
+            </Head>
             {<Banner Title="Windows VS Linux For Programmers in 2024" />}
             <div className='main'>
                 <div className='gridContainer'>
