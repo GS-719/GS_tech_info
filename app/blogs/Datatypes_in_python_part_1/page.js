@@ -81,7 +81,7 @@ const page = () => {
         <>
             <Head>
                 <NextSeo
-                    title="Datatypes in python"
+                    title="Datatypes in python | GS Tech Info"
                     description="What is Datatypes in python?"
                     canonical="https://gs-tech-info.vercel.app/blogs/Datatypes_in_python_part_1"
                     openGraph={{
