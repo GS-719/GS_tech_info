@@ -4,6 +4,7 @@ import Image from "next/image";
 import Windows_VS_Linux from "../../Img/Title/Windows_VS_Linux.png";
 import VS_code from "../../Img/Title/VS_Code.png";
 import Datatype_P1 from "@/Img/Title/Datatypes_in_python_part_1.png";
+import Html from "../../Img/Title/Html.png";
 import Link from "next/link";
 
 const page = () => {
@@ -29,10 +30,21 @@ const page = () => {
                 </div>
                 <hr />
                 <div className='Row'>
-                    <Link href="blogs/Datatypes_in_python_part_1" >
+                    <Link href="blogs/Datatypes_in_python_Part_1" >
                         <div className='Element'>
                             <Image src={Datatype_P1} alt="error" className='E_IMG' />
                             <h1 className='E_Title'>Datatypes in python Part 1</h1>
+                        </div>
+                    </Link>
+                </div>
+                <hr />
+                <div className='Row'>
+                    <Link href="blogs/Html/" >
+                        <div className='Element'>
+                            <Image src={Html} alt="error"/>
+                            <div>
+                                <h1 className='E_Title'>Html (Hyper Text Markup Language) Beginner-to-Advance</h1>
+                            </div>
                         </div>
                     </Link>
                 </div>
