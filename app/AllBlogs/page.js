@@ -41,7 +41,7 @@ const page = () => {
                 <div className='Row'>
                     <Link href="blogs/Html/" >
                         <div className='Element'>
-                            <Image src={Html} alt="error"/>
+                            <Image src={Html} alt="error" className='E_IMG'/>
                             <div>
                                 <h1 className='E_Title'>Html (Hyper Text Markup Language) Beginner-to-Advance</h1>
                             </div>
