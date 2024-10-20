@@ -6,6 +6,8 @@ import Google_Adsense from "./Components/Google_Adsense";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Head from "next/head";
+// import "bootstrap/dist/css/bootstrap.min.css";
+import Bootstrap from "./Components/Bootstrap";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +25,7 @@ export default function RootLayout({ children }) {
         {/* <meta property="og:url" content="https://gs-tech-info.vercel.app/"/> */}
         <meta property="og:type" content="website" />
         <meta name="description" content="The GS Tech Info provides you 100% true information about computers" />
+        <meta property="dc:creator" content="GS" />
         <meta name="google-adsense-account" content="ca-pub-3294386833309868" />
         <meta name="google-site-verification" content="1fckTI0MM1h8fwBgsl084W1Ew-Y4wrbyTF_MOhGpmjQ" />
       </Head>
@@ -31,7 +34,8 @@ export default function RootLayout({ children }) {
         {children}
         {<Footer />}
         {<Analytics />}
-        {< SpeedInsights />}
+        {<SpeedInsights />}
+        {<Bootstrap />}
       </body>
       <Google_Adsense />
     </html>
