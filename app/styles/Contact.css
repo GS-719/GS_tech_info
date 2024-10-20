@@ -1,0 +1,28 @@
+.Flex_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px;
+}
+
+.Email_form {
+    display: flex;
+    flex-direction: column;
+}
+
+.Input {
+    margin: 10px;
+    padding: 20px;
+    width: 50vw;
+    border: 1px solid grey;
+    border-radius: 10px;
+}
+.Submit {
+    font-weight: 600;
+    font-size: 16px;
+}
+.Submit:hover {
+    cursor: pointer;
+    background-color: grey;
+    color: white;
+}
