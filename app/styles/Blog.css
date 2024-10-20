@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
@@ -29,7 +29,7 @@ html {
     width: 50vw;
 }
 
-.main_content{
+.main_content {
     display: flex;
     justify-content: center;
     width: 60vw;
@@ -37,23 +37,27 @@ html {
     margin-top: 10px;
 }
 
-.Note{
-    color: red;
-    margin: 10px;
-}
-
 .main {
     font-weight: 300;
 }
 
+@media (max-width: 725px) {
+    .gridContainer {
+        display: block;
+    }
 
+    .main_content {
+        width: 90vw;
+        padding: 20px;
+    }
+}
 
 @media (max-width: 431px) {
     .gridContainer {
         display: block;
     }
 
-    .main_content{
+    .main_content {
         width: 90vw;
         padding: 20px;
     }
@@ -64,7 +68,7 @@ html {
         display: block;
     }
 
-    .main_content{
+    .main_content {
         width: 90vw;
         padding: 20px;
     }
@@ -75,7 +79,7 @@ html {
         display: block;
     }
 
-    .main_content{
+    .main_content {
         width: 80vw;
         padding: 20px;
     }
