@@ -28,10 +28,9 @@ const Navbar = () => {
                     </ul>
                 </nav>
             </header>
-            <hr/>
+            <hr />
         </>
     )
 }
 
 export default Navbar
-
