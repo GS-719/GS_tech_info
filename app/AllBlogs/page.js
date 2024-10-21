@@ -37,17 +37,7 @@ const page = () => {
                         </div>
                     </Link>
                 </div>
-                <hr />
-                <div className='Row'>
-                    <Link href="blogs/Html/" >
-                        <div className='Element'>
-                            <Image src={Html} alt="error" className='E_IMG'/>
-                            <div>
-                                <h1 className='E_Title'>Html (Hyper Text Markup Language) Beginner-to-Advance</h1>
-                            </div>
-                        </div>
-                    </Link>
-                </div>
+                <hr />
             </div>
         </>
     )
