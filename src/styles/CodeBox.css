@@ -1,0 +1,41 @@
+.code-container {
+  margin: 16px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  background-color: #1e1e1e;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background-color: #2d2d2d;
+  color: #ddd;
+  font-size: 0.875rem;
+}
+
+.code-header button {
+  background: none;
+  border: none;
+  color: #4caf50;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.code-header button:hover {
+  color: #81c784;
+}
+
+.code-container pre {
+  max-height: 400px;
+  overflow-x: auto;
+  overflow-y: auto;
+  margin: 0;
+}
+
+@media (max-width: 545px) {
+  .code-container {
+    width: 90vw;
+  }
+}

@@ -1,0 +1,93 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.Main_Banner {
+    height: 40vh;
+    background-color: rgb(46, 46, 141);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+
+@media (max-width: 855px) {
+    h1 {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 822px) {
+    h1 {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 770px) {
+    h1 {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 545px) {
+    h1 {
+        font-size: 30px;
+    }
+    .Main_Banner {
+        margin: auto;
+        padding: 0;
+    }
+}
+
+@media (max-width: 431px) {
+    h1 {
+        font-size: 30px;
+    }
+
+    .Main_Banner {
+        margin: auto;
+        padding: 0;
+    }
+}
+
+@media (max-width: 415px) {
+    h1 {
+        font-size: 30px;
+    }
+
+    .Main_Banner {
+        margin: auto;
+        padding: 0;
+    }
+}
+
+@media (max-width: 380px) {
+    h1 {
+        font-size: 25px;
+    }
+
+    .Main_Banner {
+        margin: auto;
+        padding: 0;
+    }
+}
+
+@media (max-width: 365px) {
+    h1 {
+        font-size: 25px;
+    }
+
+    .Main_Banner {
+        margin: auto;
+        padding: 0;
+    }
+}
+
