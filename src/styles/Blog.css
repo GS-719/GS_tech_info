@@ -13,8 +13,17 @@ html {
     justify-content: space-between;
 }
 
+.link_Item {
+    text-decoration: underline;
+    color: blue;
+}
+
 .ul_tag_Privacy {
     margin-left: 70px;
+}
+
+.LeftMargin {
+    margin-left: 50px;
 }
 
 .li_tag_privacy {
