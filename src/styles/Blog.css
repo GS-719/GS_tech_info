@@ -17,6 +17,10 @@ html {
     text-decoration: underline;
     color: blue;
 }
+.Main {
+    margin: 0;
+    padding: 0;
+}
 
 .ul_tag_Privacy {
     margin-left: 70px;
