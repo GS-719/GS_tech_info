@@ -4,6 +4,7 @@ import Image from "next/image";
 import Windows_VS_Linux from "@/Img/Title/Windows_VS_Linux.png";
 import VS_code from "@/Img/Title/VS_Code.png";
 import Datatype_P1 from "@/Img/Title/Datatypes_in_python_part_1.png";
+import Vercel_IMG from "@/Img/Title/Vercel's_E-commarce_Template_Review.png";
 import Html from "@/Img/Title/Html.png";
 import Link from "next/link";
 
@@ -41,9 +42,20 @@ const page = () => {
                 <div className='Row'>
                     <Link href="blogs/Html" >
                         <div className='Element'>
-                            <Image src={Html} alt="error" className='E_IMG'/>
+                            <Image src={Html} alt="error" className='E_IMG' />
                             <div>
                                 <h1 className='E_Title'>Html (Hyper Text Markup Language) Beginner-to-Advance</h1>
+                            </div>
+                        </div>
+                    </Link>
+                </div>
+                <hr />
+                <div className='Row'>
+                    <Link href="blogs/VercelE-commarceTemplateReviews" >
+                        <div className='Element'>
+                            <Image src={Vercel_IMG} alt="error" className='E_IMG' />
+                            <div>
+                                <h1 className='E_Title'>Vercel's E-commarce Template Reviews.</h1>
                             </div>
                         </div>
                     </Link>
