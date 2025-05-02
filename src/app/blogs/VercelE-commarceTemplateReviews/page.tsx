@@ -3,10 +3,39 @@ import Banner from "@/Components/Banner";
 import "@/styles/Blog.css";
 import Note from "@/Components/Note";
 import Link from 'next/link';
+import Head from 'next/head';
+import { NextSeo } from 'next-seo';
 
 const Page = () => {
     return (
         <>
+            <Head>
+                <NextSeo
+                    title="Vercel’s E-commerce Template – My Personal Reviews"
+                    description="Beginner-friendly review of Vercel's E-commerce template and advanced features like Caching ISR and Streaming PPR. Explained with clarity, real-world examples, and personal experience from Vercel’s Zoom session."
+                    canonical="https://gs-tech-info.vercel.app/blogs/VercelE-commarceTemplateReviews"
+                    openGraph={{
+                        url: 'https://gs-tech-info.vercel.app/blogs/VercelE-commarceTemplateReviews',
+                        title: "Vercel’s E-commerce Template – My Personal Reviews",
+                        description: "Clear and beginner-friendly breakdown of Streaming PPR and Caching ISR, written by a 16-year-old passionate developer after attending Vercel's Zoom session.",
+                        images: [
+                            {
+                                url: 'https://gs-tech-info.vercel.app/icon.png',
+                                width: 800,
+                                height: 600,
+                                alt: 'Logo',
+                                type: 'image/jpeg/png',
+                            },
+                        ],
+                        site_name: 'GS Tech Info',
+                    }}
+                    twitter={{
+                        handle: '@GS5288667485872',
+                        site: '@GS5288667485872',
+                        cardType: 'summary_large_image',
+                    }}
+                />
+            </Head>
             {<Banner Title="Vercel's E-commarce Tamplate - My Personal Reviews" />}
             <div className="Main">
                 <div className='gridContainer'>
