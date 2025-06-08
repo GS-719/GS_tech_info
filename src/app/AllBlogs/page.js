@@ -52,7 +52,7 @@ const page = () => {
                 </div>
                 <hr />
                 <div className='Row'>
-                    <Link href="blogs/VercelE-commarceTemplateReviews" >
+                    <Link href="blogs/SeamlessPerformanceOptimizationInNext.js:MasterISR,PPR,andPrefetching" >
                         <div className='Element'>
                             <Image src={NextJSOptimization} alt="error" className='E_IMG' />
                             <div>
