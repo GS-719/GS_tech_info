@@ -25,7 +25,10 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "GS Tech Info",
-  description: "The GS Tech Info provides you 100% true information about computers"
+  description: "The GS Tech Info provides you 100% true information about computers",
+  other: {
+    "google-site-verification": "1fckTI0MM1h8fwBgsl084W1Ew-Y4wrbyTF_MOhGpmjQ",
+  }
 };
 
 export default function RootLayout({
