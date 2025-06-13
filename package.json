@@ -25,7 +25,7 @@
     "postcss": "^8.4.47",
     "react": "19.0.0-rc-69d4b800-20241021",
     "react-dom": "19.0.0-rc-69d4b800-20241021",
-    "react-syntax-highlighter": "^5.8.0",
+    "react-syntax-highlighter": "^15.6.1",
     "sharp": "^0.33.4"
   },
   "devDependencies": {
