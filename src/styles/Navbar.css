@@ -12,17 +12,25 @@
     padding: 6px;
 }
 
+nav {
+    display: flex;
+}
+
+.drTBtn {
+    margin-left: 15px;
+}
+
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 10px;
-    color: grey;
+    /* color: grey; */
     padding: 0 10px 0 10px;
 }
 
 .GS_Logo {
-    color: black;
+    /* color: black; */
     font-weight: 600;
     font-size: 20px;
 }
@@ -46,10 +54,10 @@ header {
 .link {
     text-decoration: none;
     list-style: none;
-    color: grey;
+    /* color: grey; */
 }
 
 .link:hover {
     text-decoration: underline;
-    color: black;
+    /* color: rgb(0, 0, 0); */
 }
