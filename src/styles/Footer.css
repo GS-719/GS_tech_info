@@ -4,7 +4,7 @@
 }
 
 .GS_Logo {
-    color: black;
+    /* color: black; */
     font-weight: 600;
     font-size: 20px;
 }
@@ -24,7 +24,7 @@
 }
 
 .Footer {
-    background-color: aliceblue;
+    /* background-color: aliceblue; */
     display: flex;
     justify-content: space-between;
     padding: 20px;
