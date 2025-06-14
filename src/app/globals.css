@@ -19,3 +19,58 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 } */
+
+:root {
+  --bg: #ffffff;
+  --text: #1a1a1a;
+  --accent: #0070f3;
+  --card: #f9f9f9;
+  --border: #e0e0e0;
+}
+
+.dark {
+  --bg: #0f0f0f;
+  --text: #f1f1f1;
+  --accent: #60a5fa;
+  --card: #1a1a1a;
+  --border: #2c2c2c;
+}
+
+/* Light Mode (default) */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  /* background-color: #ffffff;
+  color: #000000; */
+  transition: all 0.3s ease;
+}
+
+/* Dark Mode */
+.dark body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.navbar {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.dark .navbar {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+}
+
+.dark .card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+}
+
+.button {
+  background-color: var(--accent);
+}
