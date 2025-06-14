@@ -41,7 +41,8 @@
 
 .Blog_Btn:hover {
     cursor: pointer;
-    background-color: rgb(225, 226, 252);
+    background-color: rgb(83, 83, 83);
+    color: white;
 }
 
 .Left_Section {
