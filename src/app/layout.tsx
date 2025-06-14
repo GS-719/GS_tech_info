@@ -47,6 +47,7 @@ export default function RootLayout({
         <meta property="dc:creator" content="GS" />
         <meta name="google-adsense-account" content="ca-pub-3294386833309868" />
         <meta name="google-site-verification" content="1fckTI0MM1h8fwBgsl084W1Ew-Y4wrbyTF_MOhGpmjQ" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
