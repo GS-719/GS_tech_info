@@ -24,6 +24,7 @@ const Footer = () => {
                 </div>
                 <div>&copy; 2024</div>
             </div>
+            <hr />
         </>
     )
 }
