@@ -8,6 +8,7 @@ import VS_code from "@/Img/Title/VS_Code.png";
 import Datatype_P1 from "@/Img/Title/Datatypes_in_python_part_1.png";
 import Html from "@/Img/Title/Html.png";
 import NextJSOptimization from "@/Img/Title/SeamlessPerformanceOptimizationInNext.js.png";
+import Middleware_Logo from "@/Img/Title/Middleware-Logo.jpeg";
 
 const page = () => {
     return (
@@ -52,11 +53,22 @@ const page = () => {
                 </div>
                 <hr />
                 <div className='Row'>
-                    <Link href="blogs/SeamlessPerformanceOptimizationInNext.js:MasterISR,PPR,andPrefetching" >
+                    <Link href="blogs/SeamlessPerformanceOptimizationInNext.js_MasterISR,PPR,andPrefetching">
                         <div className='Element'>
                             <Image src={NextJSOptimization} alt="error" className='E_IMG' />
                             <div>
                                 <h1 className='E_Title'>Seamless Performance Optimization In Next.js: Master ISR, PPR, and Prefetching</h1>
+                            </div>
+                        </div>
+                    </Link>
+                </div>
+                <hr />
+                <div className='Row'>
+                    <Link href="blogs/Middleware-The-Ultimate-Guide">
+                        <div className='Element'>
+                            <Image src={Middleware_Logo} alt="error" className='E_IMG' />
+                            <div>
+                                <h1 className='E_Title'>Next.js Middleware Mastery: The Ultimate Guide</h1>
                             </div>
                         </div>
                     </Link>
