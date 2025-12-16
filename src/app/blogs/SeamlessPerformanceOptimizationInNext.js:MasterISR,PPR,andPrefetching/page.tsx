@@ -3,7 +3,6 @@ import Banner from "@/Components/Banner";
 import "@/styles/Blog.css";
 import Note from "@/Components/Note";
 import Head from 'next/head';
-import { NextSeo } from 'next-seo';
 import CodeBox from '@/Components/CodeBox';
 
 const PrefetchingCode = `
@@ -25,28 +24,6 @@ export default function PrefetchingExample() {
 const Page = () => {
     return (
         <>
-            <Head>
-                <NextSeo
-                    title="Welcome to Seamless Performance Optimization in Next.js: Master ISR, PPR, and Prefetching"
-                    description="Learn how to optimize performance in Next.js with techniques like ISR, Streaming PPR, and Prefetching <Link /> for blazing-fast pages."
-                    canonical="https://gs-tech-info.vercel.app/blogs/SeamlessPerformanceOptimizationInNext.js:MasterISR,PPR,andPrefetching"
-                    openGraph={{
-                        url: 'https://gs-tech-info.vercel.app/blogs/SeamlessPerformanceOptimizationInNext.js:MasterISR,PPR,andPrefetching',
-                        title: 'Welcome to Seamless Performance Optimization in Next.js',
-                        description:
-                            'Master the techniques that supercharge your Next.js apps: ISR, Streaming PPR, and Prefetching <Link />.',
-                        images: [
-                            {
-                                url: 'https://gs-tech-info.vercel.app/LOGO.png', // Put your image URL here
-                                width: 800,
-                                height: 600,
-                                alt: 'Next.js performance optimization',
-                            },
-                        ],
-                        site_name: 'GS Tech Info',
-                    }}
-                />
-            </Head>
             {<Banner Title="Supercharge Your Next.js App: ISR, PPR, Prefetching with <Link/>" />}
             <div className="Main">
                 <div className='gridContainer'>
