@@ -4,12 +4,11 @@ import Image from "next/image";
 import Home_1 from "@/Img/Logo/Home_1.jpg";
 import Link from 'next/link';
 import Head from 'next/head';
-import { NextSeo } from 'next-seo';
 
 const Home = () => {
   return (
     <>
-      <Head>
+      {/* <Head>
         <NextSeo
           title="GS Tech Info"
           description="The GS Tech Info provides you 100% true information about computers"
@@ -38,7 +37,7 @@ const Home = () => {
           }}
         />
         <meta property="og:url" content="https://gs-tech-info.vercel.app/" />
-      </Head>
+      </Head> */}
       <div className='Main'>
         <section className='Left_Section'>
           <h1 className='Main_title'> The GS Tech Info provides you 100% true information about computers</h1>
