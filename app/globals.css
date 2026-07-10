@@ -52,55 +52,68 @@
 
 :root {
   color-scheme: dark;
-  /* Dark background - very dark charcoal */
-  --background: oklch(0.08 0 0);
-  /* Off-white foreground */
-  --foreground: oklch(0.96 0 0);
-  /* Slightly lighter card background for depth */
-  --card: oklch(0.12 0 0);
-  --card-foreground: oklch(0.96 0 0);
-  --popover: oklch(0.12 0 0);
-  --popover-foreground: oklch(0.96 0 0);
-  /* Accent: subtle cyan for code/links */
-  --primary: oklch(0.68 0.1 263);
-  --primary-foreground: oklch(0.96 0 0);
-  --secondary: oklch(0.18 0 0);
-  --secondary-foreground: oklch(0.96 0 0);
-  /* Muted for secondary text */
-  --muted: oklch(0.22 0 0);
-  --muted-foreground: oklch(0.68 0 0);
-  --accent: oklch(0.68 0.1 263);
-  --accent-foreground: oklch(0.08 0 0);
-  --destructive: oklch(0.6 0.2 30);
-  /* Subtle borders */
-  --border: oklch(0.2 0 0 / 30%);
-  --input: oklch(0.15 0 0 / 50%);
-  --ring: oklch(0.68 0.1 263 / 40%);
-  --chart-1: oklch(0.68 0.1 263);
-  --chart-2: oklch(0.6 0.1 280);
-  --chart-3: oklch(0.55 0.1 250);
-  --chart-4: oklch(0.5 0.1 220);
-  --chart-5: oklch(0.45 0.1 200);
+
+  /* GitHub Dark Dimmed / Vercel Midnight Fusion */
+  /* Soft charcoal slate canvas prevents screen-glare */
+  --background: oklch(0.22 0.015 245);
+  /* Muted warm off-white, significantly reduces reading fatigue */
+  --foreground: oklch(0.86 0.01 245);
+
+  /* Code container background and cards */
+  --card: oklch(0.18 0.015 245);
+  --card-foreground: oklch(0.86 0.01 245);
+
+  --popover: oklch(0.18 0.015 245);
+  --popover-foreground: oklch(0.86 0.01 245);
+
+  /* Calming, low-vibrancy Slate Blue accent for links & active states */
+  --primary: oklch(0.72 0.11 220);
+  --primary-foreground: oklch(0.12 0.015 245);
+
+  --secondary: oklch(0.26 0.015 245);
+  --secondary-foreground: oklch(0.86 0.01 245);
+
+  --muted: oklch(0.26 0.015 245);
+  --muted-foreground: oklch(0.65 0.01 245);
+
+  --accent: oklch(0.72 0.11 220);
+  --accent-foreground: oklch(0.12 0.015 245);
+
+  --destructive: oklch(0.62 0.18 28);
+
+  /* UI Borders and interactive lines */
+  --border: oklch(0.32 0.015 245 / 60%);
+  --input: oklch(0.26 0.015 245);
+  --ring: oklch(0.72 0.11 220 / 40%);
+
+  /* IDE Color Palette accents for diagrams / data visuals */
+  --chart-1: oklch(0.72 0.11 220);  /* Soft Blue */
+  --chart-2: oklch(0.76 0.12 165);  /* Soft Sage/Teal */
+  --chart-3: oklch(0.82 0.12 95);   /* Soft Amber */
+  --chart-4: oklch(0.74 0.14 310);  /* Soft Purple */
+  --chart-5: oklch(0.70 0.17 25);   /* Soft Coral */
+
   --radius: 0.5rem;
-  --sidebar: oklch(0.12 0 0);
-  --sidebar-foreground: oklch(0.96 0 0);
-  --sidebar-primary: oklch(0.68 0.1 263);
-  --sidebar-primary-foreground: oklch(0.08 0 0);
-  --sidebar-accent: oklch(0.22 0 0);
-  --sidebar-accent-foreground: oklch(0.96 0 0);
-  --sidebar-border: oklch(0.2 0 0 / 30%);
-  --sidebar-ring: oklch(0.68 0.1 263 / 40%);
+
+  --sidebar: oklch(0.18 0.015 245);
+  --sidebar-foreground: oklch(0.86 0.01 245);
+  --sidebar-primary: oklch(0.72 0.11 220);
+  --sidebar-primary-foreground: oklch(0.12 0.015 245);
+  --sidebar-accent: oklch(0.26 0.015 245);
+  --sidebar-accent-foreground: oklch(0.86 0.01 245);
+  --sidebar-border: oklch(0.32 0.015 245 / 60%);
+  --sidebar-ring: oklch(0.72 0.11 220 / 40%);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  
+
   html {
     @apply bg-background;
   }
-  
+
   body {
     @apply bg-background text-foreground font-sans;
     font-feature-settings: "rlig" 1, "calt" 1;
@@ -108,55 +121,56 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Premium typography for long-form reading */
+  /* Structural Typography Optimization */
   h1 {
-    @apply text-4xl font-bold tracking-tight mb-6 text-balance;
+    @apply text-4xl font-bold tracking-tight mb-6 text-balance text-white;
   }
 
   h2 {
-    @apply text-3xl font-bold tracking-tight mb-4 mt-8 text-balance;
+    @apply text-2xl font-semibold tracking-tight mb-4 mt-10 text-balance text-white border-b border-border pb-2;
   }
 
   h3 {
-    @apply text-2xl font-semibold tracking-tight mb-3 mt-6 text-balance;
+    @apply text-xl font-semibold tracking-tight mb-3 mt-8 text-balance text-white/90;
   }
 
   h4 {
-    @apply text-xl font-semibold tracking-tight mb-2 mt-4;
-  }
-
-  h5, h6 {
-    @apply text-lg font-semibold tracking-tight mb-2 mt-3;
+    @apply text-lg font-semibold tracking-tight mb-2 mt-6 text-white/90;
   }
 
   p {
-    @apply text-lg leading-8 mb-4;
-    line-height: 1.8;
+    @apply text-[16px] text-foreground/95 leading-7 mb-5;
   }
 
+  /* Inline code blocks (e.g. `const app`) */
   code {
-    @apply font-mono bg-muted px-2 py-1 rounded text-sm text-accent;
+    @apply font-mono bg-card px-1.5 py-0.5 rounded border border-border text-sm text-primary font-medium;
   }
 
+  /* Full multi-line IDE code blocks */
   pre {
-    @apply bg-muted rounded-lg p-4 mb-4 overflow-x-auto;
+    @apply bg-card border border-border rounded-xl p-4 mb-6 overflow-x-auto shadow-sm;
+  }
+  
+  pre code {
+    @apply bg-transparent p-0 border-0 rounded-none text-foreground text-[14px] leading-6 font-normal;
   }
 
   a {
-    @apply text-accent hover:text-accent/80 transition-colors underline;
+    @apply text-primary hover:text-primary/80 transition-colors no-underline border-b border-primary/30 hover:border-primary pb-0.5;
   }
 
   blockquote {
-    @apply border-l-4 border-accent pl-4 italic text-muted-foreground my-4;
+    @apply border-l-4 border-primary/60 bg-card/40 px-4 py-3 rounded-r-lg italic text-muted-foreground my-6;
   }
 
-  ul, ol {
-    @apply mb-4 pl-6;
+  ul,
+  ol {
+    @apply mb-5 pl-6 text-foreground/95;
   }
 
   li {
-    @apply mb-2 text-lg leading-8;
-    line-height: 1.8;
+    @apply mb-2 text-[16px] leading-7;
   }
 }
 
@@ -165,16 +179,15 @@
     text-wrap: balance;
   }
 
-  /* Subtle shadows for depth */
   .shadow-sm {
-    box-shadow: 0 1px 2px oklch(0 0 0 / 5%);
+    box-shadow: 0 1px 3px oklch(0 0 0 / 20%);
   }
 
   .shadow {
-    box-shadow: 0 4px 6px oklch(0 0 0 / 10%);
+    box-shadow: 0 4px 12px oklch(0 0 0 / 25%);
   }
 
   .shadow-lg {
-    box-shadow: 0 10px 15px oklch(0 0 0 / 15%);
+    box-shadow: 0 12px 24px oklch(0 0 0 / 35%);
   }
 }

@@ -9,7 +9,7 @@ export default function ArticlePage() {
   return (
     <ArticleLayout
       title="Building Scalable Database Architectures"
-      author="GS Tech"
+      author="Gurjot"
       date="March 15, 2024"
       readingTime="12 min read"
       category="Database"

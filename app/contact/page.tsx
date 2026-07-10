@@ -1,7 +1,7 @@
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+// import { Input } from '@/components/ui/input'
 import { Mail, GitBranch, Share2 } from 'lucide-react'
 
 export default function ContactPage() {
@@ -23,7 +23,7 @@ export default function ContactPage() {
                   <label htmlFor="name" className="block text-sm font-medium text-muted-foreground mb-2">
                     Name
                   </label>
-                  <Input
+                  <input
                     id="name"
                     type="text"
                     placeholder="Your name"
@@ -33,7 +33,7 @@ export default function ContactPage() {
                   <label htmlFor="email" className="block text-sm font-medium text-muted-foreground mb-2">
                     Email
                   </label>
-                  <Input
+                  <input
                     id="email"
                     type="email"
                     placeholder="your@email.com"
