@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Header } from '@/src/components/header'
-import { Footer } from '@/src/components/footer'
+import { Header } from '@/src/components/layout/header'
+import { Footer } from '@/src/components/layout/footer'
 import { ChevronUp } from 'lucide-react'
 
 interface Heading {

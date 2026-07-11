@@ -1,5 +1,5 @@
-import { Header } from '@/src/components/header'
-import { Footer } from '@/src/components/footer'
+import { Header } from '@/src/components/layout/header'
+import { Footer } from '@/src/components/layout/footer'
 import { Button } from '@/src/components/ui/button'
 // import { Input } from '@/components/ui/input'
 import { Mail, GitBranch, Share2 } from 'lucide-react'

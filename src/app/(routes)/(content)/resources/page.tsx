@@ -1,5 +1,5 @@
-import { Header } from '@/src/components/header'
-import { Footer } from '@/src/components/footer'
+import { Header } from '@/src/components/layout/header'
+import { Footer } from '@/src/components/layout/footer'
 import { Button } from '@/src/components/ui/button'
 import { ExternalLink, GitBranch, Book, Code } from 'lucide-react'
 

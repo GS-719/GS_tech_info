@@ -1,0 +1,715 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==========================================
+// 1. AUTHENTICATION & ACCESS CONTROL (RBAC)
+// ==========================================
+
+enum UserRole {
+  USER
+  AUTHOR
+  MODERATOR
+  ADMIN
+}
+
+model User {
+  id              String           @id @default(cuid()) // CUIDs maximize B-Tree balance performance
+  name            String?
+  email           String           @unique
+  hashedPassword  String?          // Aligned with modern Auth.js/NextAuth standards
+  emailVerified   DateTime?
+  image           String?
+  role            UserRole         @default(USER)
+  
+  // Soft Delete Support: Protects system metrics if an account is closed
+  deletedAt       DateTime?        
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // Core OAuth & JWT Hardening Tokens
+  accounts        Account[]
+  refreshTokens   RefreshToken[]
+  verificationTokens VerificationToken[]
+  passwordResetTokens PasswordResetToken[]
+  
+  // Profile & Preferences
+  profile         UserProfile?
+  settings        UserSettings?
+  notificationPrefs NotificationPreference?
+
+  // Content Attribution Matrix
+  contentNodes    ContentNode[]
+
+  // Community Engagement
+  comments        Comment[]
+  commentLikes    CommentLike[]
+  reportsSubmitted Report[]        @relation("Reporter")
+  reportsHandled   Report[]        @relation("Moderator")
+  
+  // Dynamic User Metrics
+  bookmarks       Bookmark[]
+  collections     Collection[]
+  readingProgress ReadingProgress[]
+  readingHistory  ReadingHistory[]
+  searchHistory   SearchHistory[]
+  notifications   Notification[]
+  feedback        FeedbackTicket[]
+  affiliateClicks AffiliateClick[]
+  viewLogs        ViewLog[]
+  quizAttempts    QuizAttempt[]
+  earnedBadges    UserBadge[]
+  auditLogs       AuditLog[]
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?  @db.Text
+  session_state     String?
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+// JWT Revocation Path & Token-Rotation Security
+model RefreshToken {
+  id            String    @id @default(cuid())
+  userId        String
+  tokenHash     String    @unique
+  revokedAt     DateTime?
+  expiresAt     DateTime
+  createdAt     DateTime  @default(now())
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt]) // Clean-up cron hooks optimization index
+  @@index([revokedAt])
+}
+
+model VerificationToken {
+  id        String    @id @default(cuid())
+  userId    String
+  token     String    @unique
+  expires   DateTime
+  usedAt    DateTime? // Audit Trail Preservation Optimization
+  createdAt DateTime  @default(now())
+  
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  token     String    @unique
+  expires   DateTime
+  usedAt    DateTime? // Audit Trail Preservation Optimization
+  createdAt DateTime  @default(now())
+  
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ==========================================
+// 2. USER PROFILES & SYSTEM SETTINGS
+// ==========================================
+
+model UserProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  username    String   @unique
+  displayName String?
+  avatarUrl   String?
+  bio         String?  @db.Text
+  website     String?
+  
+  // Professional Developer Context Metrics
+  occupation  String?
+  company     String?
+  location    String?
+  
+  github      String?
+  twitter     String?
+  linkedin    String?
+  
+  isPublic    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Theme {
+  LIGHT
+  DARK
+  SYSTEM
+}
+
+model UserSettings {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  theme           Theme    @default(DARK) 
+  language        String   @default("en")
+  privacySettings Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model NotificationPreference {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  emailMarketing Boolean  @default(true)
+  emailSecurity  Boolean  @default(true)
+  inAppComments  Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ==========================================
+// 3. THE RICH METADATA ANCHOR (Bridges MDX)
+// ==========================================
+
+enum ContentType {
+  ARTICLE
+  TUTORIAL
+  GUIDE
+  DOCUMENTATION
+  RESOURCE
+}
+
+enum ContentStatus {
+  DRAFT
+  PENDING_REVIEW // Supports author submission workflows beautifully
+  REJECTED
+  PUBLISHED
+  ARCHIVED
+}
+
+model ContentNode {
+  id              String           @id @default(cuid())
+  slug            String           @unique 
+  mdxPath         String           @unique // Direct link to local filesystem file
+  type            ContentType
+  status          ContentStatus    @default(DRAFT)
+  isFeatured      Boolean          @default(false)
+  authorId        String
+  categoryId      String?
+  
+  // Cached Build Stats: Prevents intense request-time file parsing bottlenecks
+  wordCount       Int?
+  readingTime     Int?             // Estimated reading duration in minutes
+  lastIndexedAt   DateTime?        // Sync verification marker
+  
+  publishedAt     DateTime?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // Data Integrity Guard: Authors cannot be wiped if valuable content relies on them
+  author          User             @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  category        Category?        @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  tags            TagsOnNodes[]
+
+  // Dynamic User Metrics
+  comments        Comment[]
+  bookmarks       Bookmark[]
+  collectionItems CollectionItem[]
+  readingProgress ReadingProgress[]
+  readingHistory  ReadingHistory[]
+  viewLogs        ViewLog[]
+  affiliateLinks  NodeAffiliateProduct[]
+  quizzes         Quiz[]
+
+  @@index([authorId])
+  @@index([categoryId])
+  // High-performance clean array sorting modifiers for dashboard lookups
+  @@index([type, status, publishedAt(sort: Desc)]) 
+}
+
+model Category {
+  id              String        @id @default(cuid())
+  name            String        @unique
+  slug            String        @unique
+  description     String?
+  icon            String?       
+  color           String?       
+  isFeatured      Boolean       @default(false)
+  order           Int           @default(0)
+  
+  // Category SEO Customization Anchors
+  metaTitle       String?
+  metaDescription String?
+  
+  // Unlimited Infinite Categorization Tree Structure Hierarchy
+  parentId        String?
+  parent          Category?     @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children        Category[]    @relation("CategoryHierarchy")
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  nodes           ContentNode[]
+}
+
+model Tag {
+  id          String        @id @default(cuid())
+  name        String        @unique
+  slug        String        @unique
+  nodes       TagsOnNodes[]
+}
+
+model TagsOnNodes {
+  contentNodeId String
+  tagId         String
+  contentNode   ContentNode @relation(fields: [contentNodeId], references: [id], onDelete: Cascade)
+  tag           Tag         @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([contentNodeId, tagId])
+  @@index([contentNodeId])
+  @@index([tagId])
+}
+
+// ==========================================
+// 4. COMMUNITY INTERACTION & DISCUSSION
+// ==========================================
+
+model Comment {
+  id            String        @id @default(cuid())
+  body          String        @db.Text
+  contentNodeId String
+  userId        String
+  parentId      String?       
+  isHidden      Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  contentNode   ContentNode   @relation(fields: [contentNodeId], references: [id], onDelete: Cascade)
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Safe Thread Preservation: Parent deletion leaves the nested discussion trees pristine
+  parent        Comment?      @relation("Replies", fields: [parentId], references: [id], onDelete: SetNull)
+  replies       Comment[]     @relation("Replies")
+  likes         CommentLike[]
+  reports       Report[]
+
+  @@index([userId])
+  @@index([parentId])
+  @@index([contentNodeId, createdAt(sort: Desc)]) 
+}
+
+model CommentLike {
+  userId    String
+  commentId String
+  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, commentId])
+  @@index([userId])
+  @@index([commentId])
+}
+
+model Report {
+  id          String    @id @default(cuid())
+  commentId   String
+  reporterId  String
+  moderatorId String?
+  reason      String    @db.Text
+  isResolved  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  comment     Comment   @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  reporter    User      @relation("Reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  moderator   User?     @relation("Moderator", fields: [moderatorId], references: [id], onDelete: SetNull)
+
+  @@index([commentId])
+  @@index([reporterId])
+  @@index([moderatorId])
+}
+
+// ==========================================
+// 5. PROGRESS, BOOKMARKS, COLLECTIONS
+// ==========================================
+
+model ReadingProgress {
+  id            String      @id @default(cuid())
+  userId        String
+  contentNodeId String
+  percentage    Int         @default(0) 
+  scrollPosition Float?     
+  isCompleted   Boolean     @default(false)
+  
+  // FIXED: Consolidated into a single clean reactive updatedAt backbone metric
+  lastReadAt    DateTime    @updatedAt 
+
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contentNode   ContentNode @relation(fields: [contentNodeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, contentNodeId])
+  @@index([userId])
+  @@index([contentNodeId])
+}
+
+model ReadingHistory {
+  id            String      @id @default(cuid())
+  userId        String
+  contentNodeId String
+  viewedAt      DateTime    @default(now())
+
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contentNode   ContentNode @relation(fields: [contentNodeId], references: [id], onDelete: Cascade)
+
+  @@index([userId, viewedAt(sort: Desc)]) 
+  @@index([contentNodeId])
+}
+
+model Bookmark {
+  id            String      @id @default(cuid())
+  userId        String
+  contentNodeId String
+  folder        String?     @default("Unorganized") 
+  createdAt     DateTime    @default(now())
+
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contentNode   ContentNode @relation(fields: [contentNodeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, contentNodeId])
+  @@index([userId])
+  @@index([contentNodeId])
+}
+
+model Collection {
+  id          String           @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  isPublic    Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items       CollectionItem[]
+
+  @@index([userId])
+}
+
+model CollectionItem {
+  id            String     @id @default(cuid())
+  collectionId  String
+  contentNodeId String
+  addedAt       DateTime   @default(now())
+
+  collection    Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  contentNode   ContentNode @relation(fields: [contentNodeId], references: [id], onDelete: Cascade)
+
+  @@unique([collectionId, contentNodeId])
+  @@index([collectionId])
+  @@index([contentNodeId])
+}
+
+// ==========================================
+// 6. COMMERCE & AFFILIATE MARKETING METRICS
+// ==========================================
+
+model AffiliateStore {
+  id        String             @id @default(cuid())
+  name      String             @unique 
+  baseUrl   String
+  products  AffiliateProduct[]
+}
+
+model AffiliateProduct {
+  id          String                    @id @default(cuid())
+  storeId     String
+  title       String
+  brand       String?
+  description String?
+  productUrl  String
+  imageUrl    String?
+  price       String?
+  currency    String                    @default("USD")
+  availability Boolean                  @default(true)
+  createdAt   DateTime                  @default(now())
+  updatedAt   DateTime                  @updatedAt
+
+  store       AffiliateStore            @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  nodes       NodeAffiliateProduct[]
+  clicks      AffiliateClick[]
+
+  @@index([storeId])
+}
+
+model NodeAffiliateProduct {
+  contentNodeId      String
+  affiliateProductId String
+
+  contentNode        ContentNode      @relation(fields: [contentNodeId], references: [id], onDelete: Cascade)
+  product            AffiliateProduct @relation(fields: [affiliateProductId], references: [id], onDelete: Cascade)
+
+  @@id([contentNodeId, affiliateProductId])
+  @@index([contentNodeId])
+  @@index([affiliateProductId])
+}
+
+model AffiliateClick {
+  id                 String           @id @default(cuid())
+  userId             String?          
+  affiliateProductId String
+  clickedAt          DateTime         @default(now())
+
+  user               User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  product            AffiliateProduct @relation(fields: [affiliateProductId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([affiliateProductId])
+  @@index([clickedAt(sort: Desc)])
+}
+
+// ==========================================
+// 7. SITE SETTINGS & LOGISTICS
+// ==========================================
+
+model SiteSetting {
+  key         String   @id 
+  value       String
+  description String?  
+  updatedAt   DateTime @updatedAt
+}
+
+model FeatureFlag {
+  key         String  @id 
+  isEnabled   Boolean @default(false)
+  description String?
+}
+
+model Announcement {
+  id        String    @id @default(cuid())
+  title     String
+  message   String    @db.Text
+  isActive  Boolean   @default(true)
+  expiresAt DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model NewsletterSubscriber {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  isSubscribed Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+enum FeedbackType {
+  BUG
+  FEATURE_REQUEST
+  SUPPORT
+  TYPO
+}
+
+enum FeedbackStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+}
+
+model FeedbackTicket {
+  id          String         @id @default(cuid())
+  userId      String?
+  type        FeedbackType
+  status      FeedbackStatus @default(OPEN)
+  message     String         @db.Text
+  createdAt   DateTime       @default(now())
+
+  user        User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+}
+
+// ==========================================
+// 8. LOGS, SEARCHES, AND NOTIFICATIONS
+// ==========================================
+
+model SearchHistory {
+  id           String   @id @default(cuid())
+  userId       String
+  query        String
+  resultsCount Int?     // Critical optimization metric identifying dead content zones
+  searchedAt   DateTime @default(now())
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, searchedAt(sort: Desc)])
+}
+
+enum NotificationType {
+  COMMENT_REPLY
+  ANNOUNCEMENT
+  NEW_BADGE
+  SYSTEM_ALERT
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  link      String?          // Direct application routing anchor (e.g. "/articles/slug#comment-id")
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead, createdAt(sort: Desc)])
+}
+
+model ViewLog {
+  id            String      @id @default(cuid())
+  contentNodeId String
+  userId        String?
+  duration      Int?        
+  
+  country       String?
+  device        String?
+  os            String?
+  browser       String?
+  referrer      String?
+  
+  ipHash        String?     
+  viewedAt      DateTime    @default(now())
+
+  contentNode   ContentNode @relation(fields: [contentNodeId], references: [id], onDelete: Cascade)
+  user          User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([contentNodeId, viewedAt(sort: Desc)])
+}
+
+enum AuditAction {
+  ROLE_UPGRADE
+  USER_BAN
+  USER_UNBAN
+  SETTING_CHANGE
+  FLAG_TOGGLE
+  CONTENT_ARCHIVED
+}
+
+model AuditLog {
+  id        String      @id @default(cuid())
+  userId    String
+  action    AuditAction 
+  details   String      @db.Text
+  ipHash    String?     // Deep operational tracking metrics
+  userAgent String?
+  createdAt DateTime    @default(now())
+
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt(sort: Desc)])
+}
+
+// ==========================================
+// 9. QUIZZES & SYSTEM GAMIFICATION
+// ==========================================
+
+model Quiz {
+  id            String         @id @default(cuid())
+  contentNodeId String
+  title         String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  
+  contentNode   ContentNode    @relation(fields: [contentNodeId], references: [id], onDelete: Cascade)
+  questions     Question[]
+  attempts      QuizAttempt[]
+
+  @@index([contentNodeId])
+}
+
+model Question {
+  id        String         @id @default(cuid())
+  quizId    String
+  text      String         @db.Text
+  order     Int            @default(0) 
+  
+  quiz      Quiz           @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  options   AnswerOption[]
+
+  @@index([quizId, order])
+}
+
+model AnswerOption {
+  id         String   @id @default(cuid())
+  questionId String
+  text       String
+  isCorrect  Boolean  @default(false)
+  order      Int      @default(0) 
+  
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([questionId, order])
+}
+
+model QuizAttempt {
+  id        String   @id @default(cuid())
+  userId    String
+  quizId    String
+  score     Int
+  passed    Boolean
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([quizId])
+}
+
+model Badge {
+  id          String      @id @default(cuid())
+  title       String      @unique
+  description String
+  imageUrl    String
+  users       UserBadge[]
+}
+
+model UserBadge {
+  id        String   @id @default(cuid())
+  userId    String
+  badgeId   String
+  earnedAt  DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge     Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+  @@index([userId])
+  @@index([badgeId])
+}

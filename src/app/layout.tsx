@@ -1,5 +1,8 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import ClientProviders from "@/src/components/SessionWrapper"
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/src/pages/api/auth/[...nextauth]";
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -24,16 +27,19 @@ export const viewport: Viewport = {
   themeColor: '#0a0a0a',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const session = await getServerSession(authOptions);
   return (
     <html lang="en" className="dark">
       <body className="antialiased">
-        {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        <ClientProviders session={session}>
+          {children}
+          {process.env.NODE_ENV === 'production' && <Analytics />}
+        </ClientProviders>
       </body>
     </html>
   )

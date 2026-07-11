@@ -1,9 +1,9 @@
 'use client'
 
-import { Header } from '@/src/components/header'
-import { Footer } from '@/src/components/footer'
+import { Header } from '@/src/components/layout/header'
+import { Footer } from '@/src/components/layout/footer'
 import { SearchBar } from '@/src/components/search-bar'
-import { ArticleCard } from '@/src/components/article-card'
+import { ArticleCard } from '@/src/components/content/article/article-card'
 import { Button } from '@/src/components/ui/button'
 import { categories } from '@/src/lib/content-config'
 import { useState, useMemo } from 'react'

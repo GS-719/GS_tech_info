@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { notFound } from 'next/navigation'
 import { getMDXContent } from '@/src/lib/mdx'
-import { ArticleLayout } from '@/src/components/article-layout'
+import { ArticleLayout } from '@/src/components/content/article/article-layout'
 
 interface PageProps {
     params: Promise<{ slug: string }>

@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useSession, signIn, signOut } from 'next-auth/react' // Imported your live auth hooks
 import { Search, Menu, X, LogIn, LogOut, User } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/src/components/ui/button'
@@ -17,12 +18,9 @@ export function Header() {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   
-  // Dynamic User Auth State Mock (Replace this hook with your true auth provider state, e.g., useUser() from Clerk)
-  const [user, setUser] = useState<{ name: string; email: string } | null>(null)
-
-  // Quick handlers to test layout dynamics
-  const handleSignInMock = () => setUser({ name: 'Dev Guest', email: 'guest@gstech.info' })
-  const handleSignOutMock = () => setUser(null)
+  // 1. Hook up the live session context monitor
+  const { data: session, status } = useSession()
+  const user = session?.user // Extracted authenticated profile state object
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/40 bg-background/80 backdrop-blur-md">
@@ -46,7 +44,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 className={`px-3 py-2 text-sm font-medium transition-colors rounded-md ${
-                  pathname.startsWith(item.href)
+                  pathname?.startsWith(item.href)
                     ? 'bg-accent/10 text-accent'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
                 }`}
@@ -79,20 +77,23 @@ export function Header() {
 
             {/* Dynamic User Profile / Auth State Module */}
             <div className="hidden sm:block">
-              {user ? (
+              {status === "loading" ? (
+                // Clean loading skeleton stub to prevent layout flashing shifts
+                <div className="w-24 h-9 rounded-lg bg-muted/40 animate-pulse" />
+              ) : user ? (
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-2 px-2 py-1 rounded-lg border border-border/40 bg-[#0d0d11]/40">
+                  <Link href="/dashboard" className="flex items-center gap-2 px-2 py-1 rounded-lg border border-border/40 bg-[#0d0d11]/40 hover:border-accent/40 transition-colors">
                     <div className="w-6 h-6 rounded-md bg-primary/20 text-primary flex items-center justify-center">
                       <User className="w-3.5 h-3.5" />
                     </div>
-                    <span className="text-xs font-medium text-muted-foreground truncate max-w-[80px]">
-                      {user.name}
+                    <span className="text-xs font-medium text-muted-foreground truncate max-w-[100px]">
+                      {user.name || "Developer"}
                     </span>
-                  </div>
+                  </Link>
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    onClick={handleSignOutMock}
+                    onClick={() => signOut({ callbackUrl: "/" })}
                     className="h-9 px-3 gap-1.5 text-muted-foreground hover:text-destructive transition-colors"
                   >
                     <LogOut className="w-4 h-4" />
@@ -102,7 +103,7 @@ export function Header() {
               ) : (
                 <Button 
                   size="sm" 
-                  onClick={handleSignInMock}
+                  onClick={() => signIn()}
                   className="h-9 gap-1.5 shadow-sm bg-primary text-primary-foreground hover:opacity-90 border-none transition-all"
                 >
                   <LogIn className="w-4 h-4" />
@@ -130,7 +131,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 className={`block px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                  pathname.startsWith(item.href)
+                  pathname?.startsWith(item.href)
                     ? 'bg-accent/10 text-accent'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
                 }`}
@@ -142,14 +143,22 @@ export function Header() {
             
             {/* Mobile-Only Action Element for Auth Management */}
             <div className="pt-4 border-t border-border/40 px-3 sm:hidden">
-              {user ? (
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs text-muted-foreground">Logged in as {user.email}</span>
+              {status === "loading" ? (
+                <div className="w-full h-9 rounded-lg bg-muted/40 animate-pulse" />
+              ) : user ? (
+                <div className="flex flex-col gap-2">
+                  <Link 
+                    href="/dashboard" 
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border/40 bg-[#0d0d11]/40 text-xs text-muted-foreground"
+                  >
+                    <User className="w-4 h-4" /> Account Dashboard
+                  </Link>
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    onClick={() => { handleSignOutMock(); setMobileMenuOpen(false); }}
-                    className="w-full text-xs text-destructive hover:bg-destructive/10"
+                    onClick={() => { signOut({ callbackUrl: "/" }); setMobileMenuOpen(false); }}
+                    className="w-full text-xs text-destructive hover:bg-destructive/10 border-destructive/20"
                   >
                     Sign Out
                   </Button>
@@ -157,7 +166,7 @@ export function Header() {
               ) : (
                 <Button 
                   size="sm" 
-                  onClick={() => { handleSignInMock(); setMobileMenuOpen(false); }}
+                  onClick={() => { signIn(); setMobileMenuOpen(false); }}
                   className="w-full text-xs bg-primary text-primary-foreground"
                 >
                   Sign In
