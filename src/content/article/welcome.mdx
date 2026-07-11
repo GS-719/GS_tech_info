@@ -1,0 +1,240 @@
+---
+title: "Introduction - GS Error Reporter"
+description: "Introduction for GS Error Reporter"
+date: "March 15, 2024"
+author: "Gurjot"
+readingTime: "5 min read"
+category: "Database"
+
+---
+
+# Introduction
+
+GS Error Reporter is a lightweight, email-first error monitoring solution for **Next.js** applications.
+
+Instead of relying on external dashboards, complex monitoring platforms, or third-party services, GS Error Reporter delivers structured runtime error reports directly to your inbox. The goal is simple: help developers identify and debug production issues quickly with minimal setup and complete control over their data.
+
+Whether you're building a personal project, an open-source application, or a production product, GS Error Reporter provides an easy way to stay informed whenever something goes wrong.
+
+---
+
+## Why GS Error Reporter?
+
+Many error monitoring platforms are powerful, but they often introduce additional complexity.
+
+They may require:
+
+- Creating an account
+- Connecting a third-party service
+- Learning a dashboard
+- Managing another dependency
+- Paying for additional usage
+
+GS Error Reporter follows a different philosophy.
+
+Instead of introducing another platform into your workflow, it uses something every developer already has:
+
+**Email.**
+
+When an error occurs, a detailed report is generated and delivered directly to your inbox using your own SMTP configuration.
+
+No dashboards.
+
+No external services.
+
+No subscriptions.
+
+Just actionable error reports.
+
+---
+
+## What can it monitor?
+
+GS Error Reporter automatically monitors several common runtime failures inside your Next.js application.
+
+### Client-side Runtime Errors
+
+Capture unexpected browser errors before your users report them.
+
+Examples include:
+
+- JavaScript Runtime Errors
+        - Uncaught JavaScript exceptions
+        - Runtime execution errors
+        - File name, line number and column number
+        - Stack trace
+- Unhandled Promise Rejections
+        - Unhandled Promise.reject()
+        - Uncaught async/await errors
+- Console Monitoring
+        - console.error()
+        - console.warn()
+- Browser Information
+        - Current URL
+        - User Agent
+        - Browser Language
+- Error Metadata
+        - Timestamp
+        - Environment (Development / Production)
+        - Project Name
+        - Additional Context (Extra Data)
+
+---
+
+### Server-side Runtime Errors
+
+Receive reports whenever server-side code throws an unexpected error.
+
+Examples include:
+
+- Uncaught Exceptions
+        - Unhandled server exceptions
+        - Runtime crashes
+- Unhandled Promise Rejections
+        - Unhandled async server errors
+        - Database promise failures
+        - API promise failures
+- Console Monitoring
+        - console.error()
+        - console.warn()
+- Server Information
+        - Node.js Version
+        - Operating System Platform
+        - Environment
+        - Timestamp
+- Error Metadata
+        - Project Name
+        - Stack Trace
+        - Additional Context (Extra Data)
+
+---
+
+### Unhandled Promise Rejections
+
+Unhandled asynchronous failures can be difficult to notice during development.
+
+GS Error Reporter captures these events and includes the complete stack trace for easier debugging.
+
+---
+
+### Console Errors and Warnings
+
+Console errors and warnings can provide valuable context while diagnosing application issues.
+
+These events can also be included inside generated reports.
+
+---
+
+## What's included in every report?
+
+Every email contains useful debugging information collected when the error occurred.
+
+Depending on the runtime and available information, reports may include:
+
+- Project information
+- Runtime (Client or Server)
+- Error message
+- Stack trace
+- Environment
+- Request URL
+- HTTP method
+- Browser information
+- User Agent
+- Platform
+- Node.js version
+- Timestamp
+- Additional metadata
+
+The goal is to provide enough context to investigate the issue without manually reproducing it.
+
+---
+
+## Supported Technologies
+
+GS Error Reporter currently supports:
+| Technology | Support |
+| :--- | :--- |
+| Next.js App Router | ✅ |
+| Next.js Pages Router | ✅ |
+| TypeScript | ✅ |
+| JavaScript | ✅ |
+| Node Runtime | ✅ |
+| Edge Runtime | ❌ |
+
+---
+
+## Design Philosophy
+
+GS Error Reporter was built around a few simple principles.
+
+### Simplicity
+
+Installation should take only a few minutes.
+
+The built-in CLI automatically prepares your project, generates the required files, and minimizes manual configuration.
+
+---
+
+### Privacy
+
+Your SMTP credentials remain on your own server.
+
+GS Error Reporter does not rely on a hosted monitoring service to send your reports.
+
+---
+
+### Developer Experience
+
+Good developer tools should disappear into the background.
+
+Once configured, GS Error Reporter quietly monitors your application and only reaches out when something requires your attention.
+
+---
+
+### Lightweight by Design
+
+GS Error Reporter focuses on solving one problem well:
+
+Delivering useful runtime error reports directly to your inbox.
+
+Rather than providing dashboards, analytics, or complex integrations, the package keeps its scope intentionally focused.
+
+---
+
+## How it works
+
+The monitoring process is straightforward.
+
+```text
+Next.js Application
+        │
+        ▼
+GSReporter
+        │
+        ▼
+Generated API Route
+        │
+        ▼
+SMTP Server
+        │
+        ▼
+Your Inbox
+```
+
+Whenever a monitored runtime error occurs:
+
+1. The error is captured.
+2. Relevant debugging information is collected.
+3. A structured HTML report is generated.
+4. The report is sent using your configured SMTP server.
+5. The email arrives in your inbox for immediate investigation.
+
+---
+
+## Next Steps
+
+You're now ready to install GS Error Reporter.
+
+Continue with the [Why GS Error Reporter Exist](/docs/why-gs-error-reporter-exist) guide to configure your project in just a few minutes.
+
+→ [Getting Started](/docs/getting-started)
