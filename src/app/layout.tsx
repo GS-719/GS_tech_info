@@ -3,7 +3,10 @@ import type { Metadata, Viewport } from 'next'
 import ClientProviders from "@/src/components/SessionWrapper"
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/pages/api/auth/[...nextauth]";
+import { Header } from '../components/layout/header';
+import { Footer } from '../components/layout/footer';
 import './globals.css'
+import Head from 'next/head';
 
 export const metadata: Metadata = {
   title: 'GS Tech Info - Premium Developer Learning Platform',
@@ -37,7 +40,9 @@ export default async function RootLayout({
     <html lang="en" className="dark">
       <body className="antialiased">
         <ClientProviders session={session}>
+          <Header/>
           {children}
+          <Footer/>
           {process.env.NODE_ENV === 'production' && <Analytics />}
         </ClientProviders>
       </body>

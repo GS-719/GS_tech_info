@@ -1,5 +1,3 @@
-import { Header } from '@/src/components/layout/header'
-import { Footer } from '@/src/components/layout/footer'
 import { ArticleCard } from '@/src/components/content/article/article-card'
 import { categories } from '@/src/lib/content-config'
 
@@ -69,7 +67,6 @@ export default async function CategoryPage({
 
   return (
     <>
-      <Header />
       <main className="flex-1">
         {/* Category Header */}
         <section className="relative border-b border-border/40 py-12">
@@ -110,7 +107,6 @@ export default async function CategoryPage({
           </section>
         )}
       </main>
-      <Footer />
     </>
   )
 }

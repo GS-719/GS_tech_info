@@ -1,12 +1,10 @@
 import { redirect } from "next/navigation";
-import { fetchDashboardDataAction } from "@/src/app/actions/dashboard";
-import { Header } from '@/src/components/layout/header';
-import { Footer } from '@/src/components/layout/footer';
+import { fetchDashboardDataAction } from "@/src/app/actions/dashboard/dashboard";
+import { DashboardActions } from '@/src/components/dashboard/dashboardAction';
 import { Button } from '@/src/components/ui/button';
 import Link from 'next/link';
 import { ArrowRight, Bookmark, BookOpen, Clock, Zap, TrendingUp } from 'lucide-react';
 
-// Lightweight utility function to compute dynamic relative times from database timestamps
 function formatTimeAgo(dateInput: Date | string): string {
   const date = new Date(dateInput);
   const now = new Date();
@@ -26,18 +24,15 @@ function formatTimeAgo(dateInput: Date | string): string {
 }
 
 export default async function DashboardPage() {
-  // Execute server data fetching payload
   const data = await fetchDashboardDataAction();
 
-  // Handle fallback routing triggers if data payload flags security rejections
   if (!data.success && data.error === "UNAUTHORIZED") {
     redirect("/login");
   }
 
-  // Calculate stats payload values directly on the server from your active database data arrays
   const articlesReadCount = data.bookmarks?.length || 0;
   const hoursLearnedCount = Math.round(Number(data.adminStats?.avgReadingMinutes || 0) * 1.5) || 0;
-  const currentStreakDays = articlesReadCount > 0 ? 5 : 0; // Dynamic fallback value matching study trends
+  const currentStreakDays = articlesReadCount > 0 ? 5 : 0;
   const topicsMasteredCount = data.featuredResources?.length || 0;
 
   const statItems = [
@@ -47,7 +42,6 @@ export default async function DashboardPage() {
     { icon: TrendingUp, label: 'Topics Mastered', value: topicsMasteredCount.toString() },
   ];
 
-  // Convert raw bookmark rows into formatted activity feeds cleanly
   const dynamicActivities = data.bookmarks?.map((bookmark: any) => ({
     title: `Saved "${bookmark.contentNode?.slug ? bookmark.contentNode.slug.replace(/-/g, " ") : "Untitled Content"}" to reading backlog`,
     date: formatTimeAgo(bookmark.createdAt),
@@ -56,25 +50,25 @@ export default async function DashboardPage() {
 
   return (
     <>
-      <Header />
       <main className="flex-1">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-          {/* Page Header */}
-          <div className="py-12 border-b border-border/40">
-            <h1 className="text-4xl font-bold tracking-tight mb-4">Learning Dashboard</h1>
-            <p className="text-lg text-muted-foreground max-w-2xl">
-              Welcome back, {data.userName || "Developer"}. Track your progress, bookmarks, and continue where you left off.
-            </p>
+          {/* Page Header (WITH DYNAMIC INTERACTIVE PROFILE & PUBLISH ACTION INJECTED) */}
+          <div className="py-12 border-b border-border/40 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div>
+              <h1 className="text-4xl font-bold tracking-tight mb-4">Learning Dashboard</h1>
+              <p className="text-lg text-muted-foreground max-w-2xl">
+                Welcome back, {data.userName || "Developer"}. Track your progress, bookmarks, and continue where you left off.
+              </p>
+            </div>
+
+            {/* 👈 Renders the profile link button alongside the interactive modal controls */}
+            <DashboardActions />
           </div>
 
-          {/* ========================================================
-              INLINED PROGRESS & ACTIVITY SECTION (Replaces learning-dashboard.tsx)
-             ======================================================== */}
+          {/* Your Learning Progress Section */}
           <section className="py-12">
             <h2 className="text-2xl font-bold tracking-tight mb-8">Your Learning Progress</h2>
-
-            {/* Stat scorecards mapping loop layout */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {statItems.map((item) => {
                 const Icon = item.icon;
@@ -93,7 +87,7 @@ export default async function DashboardPage() {
               })}
             </div>
 
-            {/* Inlined Dynamic Activity Feed */}
+            {/* Recent Activity */}
             <div className="mt-12">
               <h3 className="text-xl font-semibold tracking-tight mb-6">Recent Activity</h3>
               <div className="space-y-4">
@@ -163,7 +157,7 @@ export default async function DashboardPage() {
             </div>
           </section>
 
-          {/* Admin Dashboard Preview - Conditional Structural Rendering */}
+          {/* Admin Dashboard Preview */}
           {data.isAdminOrMod && (
             <section className="py-12 border-t border-border/40">
               <h2 className="text-2xl font-bold tracking-tight mb-8">Admin Dashboard</h2>
@@ -251,7 +245,6 @@ export default async function DashboardPage() {
           </section>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

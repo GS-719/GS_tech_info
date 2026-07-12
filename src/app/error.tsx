@@ -1,7 +1,5 @@
 'use client'
 
-import { Header } from '@/src/components/layout/header'
-import { Footer } from '@/src/components/layout/footer'
 import { Button } from '@/src/components/ui/button'
 import Link from 'next/link'
 import { AlertCircle, RefreshCw, Home } from 'lucide-react'
@@ -20,7 +18,6 @@ export default function Error({
 
   return (
     <>
-      <Header />
       <main className="flex-1 flex items-center justify-center">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-24 text-center">
           <div className="mb-8 flex justify-center">
@@ -68,7 +65,6 @@ export default function Error({
           </div>
         </div>
       </main>
-      <Footer />
     </>
   )
 }

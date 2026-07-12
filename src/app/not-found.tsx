@@ -1,5 +1,3 @@
-import { Header } from '@/src/components/layout/header'
-import { Footer } from '@/src/components/layout/footer'
 import { Button } from '@/src/components/ui/button'
 import Link from 'next/link'
 import { ArrowLeft, Search } from 'lucide-react'
@@ -7,7 +5,6 @@ import { ArrowLeft, Search } from 'lucide-react'
 export default function NotFound() {
   return (
     <>
-      <Header />
       <main className="flex-1 flex items-center justify-center">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-24 text-center">
           <div className="mb-8">
@@ -56,7 +53,6 @@ export default function NotFound() {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   )
 }

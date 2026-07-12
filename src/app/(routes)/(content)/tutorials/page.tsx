@@ -1,5 +1,3 @@
-import { Header } from '@/src/components/layout/header'
-import { Footer } from '@/src/components/layout/footer'
 import { ArticleCard } from '@/src/components/content/article/article-card'
 
 const tutorials = [
@@ -32,7 +30,6 @@ const tutorials = [
 export default function TutorialsPage() {
   return (
     <>
-      <Header />
       <main className="flex-1">
         {/* Page Header */}
         <section className="relative border-b border-border/40 py-12">
@@ -60,7 +57,6 @@ export default function TutorialsPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </>
   )
 }

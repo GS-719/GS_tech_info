@@ -1,5 +1,3 @@
-import { Header } from '@/src/components/layout/header'
-import { Footer } from '@/src/components/layout/footer'
 import { Button } from '@/src/components/ui/button'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
@@ -8,7 +6,6 @@ import { categories } from '@/src/lib/content-config'
 export default function CategoriesPage() {
   return (
     <>
-      <Header />
       <main className="flex-1">
         {/* Page Header */}
         <section className="relative border-b border-border/40 py-12">
@@ -38,7 +35,6 @@ export default function CategoriesPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </>
   )
 }

@@ -1,5 +1,3 @@
-import { Header } from '@/src/components/layout/header'
-import { Footer } from '@/src/components/layout/footer'
 import { Button } from '@/src/components/ui/button'
 import Link from 'next/link'
 import { ArrowRight, BookOpen, Zap, Map, Library } from 'lucide-react'
@@ -7,7 +5,6 @@ import { ArrowRight, BookOpen, Zap, Map, Library } from 'lucide-react'
 export default function Page() {
   return (
     <>
-      <Header />
       {/* Base container set to deep pitch-black */}
       <main className="flex-1 bg-[#050506] text-foreground relative overflow-hidden">
         
@@ -46,7 +43,7 @@ export default function Page() {
             
             {/* Headline with Clean Vercel-Style Text Gradient */}
             <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 max-w-4xl mx-auto text-balance text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/70 leading-[1.15]">
-              Master Advanced <br /> Tech Concepts
+              Master Advanced <br /> Technology
             </h1>
             
             <p className="text-xl text-muted-foreground/90 max-w-2xl mx-auto mb-8 text-balance leading-relaxed">
@@ -180,7 +177,6 @@ export default function Page() {
           </div>
         </section>
       </main>
-      <Footer />
     </>
   )
 }

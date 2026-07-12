@@ -1,5 +1,3 @@
-import { Header } from '@/src/components/layout/header'
-import { Footer } from '@/src/components/layout/footer'
 import { ArticleCard } from '@/src/components/content/article/article-card'
 import { Button } from '@/src/components/ui/button'
 import { Search } from 'lucide-react'
@@ -61,7 +59,6 @@ const articles = [
 export default function ArticlesPage() {
   return (
     <>
-      <Header />
       <main className="flex-1">
         {/* Page Header */}
         <section className="relative border-b border-border/40 py-12">
@@ -134,7 +131,6 @@ export default function ArticlesPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </>
   )
 }

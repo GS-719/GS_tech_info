@@ -1,10 +1,6 @@
-import { Header } from '@/src/components/layout/header'
-import { Footer } from '@/src/components/layout/footer'
-
 export default function AboutPage() {
   return (
     <>
-      <Header />
       <main className="flex-1">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-8 text-balance">
@@ -42,7 +38,6 @@ export default function AboutPage() {
           </article>
         </div>
       </main>
-      <Footer />
     </>
   )
 }

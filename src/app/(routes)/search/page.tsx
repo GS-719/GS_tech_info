@@ -1,7 +1,5 @@
 'use client'
 
-import { Header } from '@/src/components/layout/header'
-import { Footer } from '@/src/components/layout/footer'
 import { SearchBar } from '@/src/components/search-bar'
 import { ArticleCard } from '@/src/components/content/article/article-card'
 import { Button } from '@/src/components/ui/button'
@@ -64,7 +62,6 @@ export default function SearchPage() {
 
   return (
     <>
-      <Header />
       <main className="flex-1">
         {/* Search Header */}
         <section className="relative border-b border-border/40 py-12 bg-muted/20">
@@ -158,7 +155,6 @@ export default function SearchPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </>
   )
 }
