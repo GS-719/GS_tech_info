@@ -3,6 +3,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/src/pages/api/auth/[...nextauth]";
 import prisma from "@/src/lib/prisma";
+import { Theme } from "@/src/generated/prisma/enums";
 
 export async function fetchFullPortfolioAction(targetUsername?: string) {
     try {

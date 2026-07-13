@@ -44,7 +44,7 @@ export function DashboardActions() {
     const handleSelectType = (typeId: string) => {
         setIsOpen(false)
         // Redirects directly to your content builder route page with the type parameter attached
-        router.push(`/dashboard/publish?type=${typeId}`)
+        router.push(`/dashboard/publish/${typeId}`)
     }
 
     return (
@@ -98,7 +98,7 @@ export function DashboardActions() {
                                             <Icon className="w-5 h-5" />
                                         </div>
                                         <h4 className="font-semibold text-foreground group-hover:text-accent transition-colors mb-1">
-                                            {item.label} Template
+                                            {item.label}
                                         </h4>
                                         <p className="text-xs text-muted-foreground leading-relaxed">
                                             {item.description}
