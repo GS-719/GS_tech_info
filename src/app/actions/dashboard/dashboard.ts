@@ -12,6 +12,8 @@ export type DashboardDataPayload = {
     isAdminOrMod: boolean;
     bookmarks: any[];
     featuredResources: any[];
+    userSettings: any | null; // 👈 Added settings reference payload slot
+    earnedBadges: any[];     // 👈 Added achievements array slot
     adminStats: {
         totalVisitors: number;
         publishedArticles: number;
@@ -21,7 +23,6 @@ export type DashboardDataPayload = {
 
 export async function fetchDashboardDataAction(): Promise<DashboardDataPayload> {
     try {
-        // 1. Internal Session Check
         const session = await getServerSession(authOptions);
         if (!session || !session.user) {
             return {
@@ -30,6 +31,8 @@ export async function fetchDashboardDataAction(): Promise<DashboardDataPayload> 
                 isAdminOrMod: false,
                 bookmarks: [],
                 featuredResources: [],
+                userSettings: null,
+                earnedBadges: [],
                 adminStats: { totalVisitors: 0, publishedArticles: 0, avgReadingMinutes: "0.0" }
             };
         }
@@ -38,9 +41,8 @@ export async function fetchDashboardDataAction(): Promise<DashboardDataPayload> 
         const userRole = session.user.role;
         const isAdminOrMod = userRole === "ADMIN" || userRole === "MODERATOR";
 
-        // 2. High-Performance Parallel Query Execution
-        const [dbBookmarks, adminMetrics, dbResources] = await Promise.all([
-            // FIXED: Standardized valid Prisma runtime query sort syntax ('desc')
+        // High-Performance Parallel Query Execution
+        const [dbBookmarks, adminMetrics, dbResources, userAccountData] = await Promise.all([
             prisma.bookmark.findMany({
                 where: { userId },
                 include: { contentNode: true },
@@ -48,7 +50,6 @@ export async function fetchDashboardDataAction(): Promise<DashboardDataPayload> 
                 take: 3,
             }),
 
-            // Fetch dynamic administrative logging matrices (Only executes if clearance matches)
             isAdminOrMod
                 ? Promise.all([
                     prisma.viewLog.count(),
@@ -57,15 +58,24 @@ export async function fetchDashboardDataAction(): Promise<DashboardDataPayload> 
                 ])
                 : Promise.resolve([0, 0, { _avg: { duration: 0 } }]),
 
-            // FIXED: Standardized valid Prisma runtime query sort syntax ('desc')
             prisma.contentNode.findMany({
                 where: { type: "RESOURCE", status: "PUBLISHED", isFeatured: true },
                 orderBy: { publishedAt: "desc" },
                 take: 3,
             }),
+
+            // 👈 Concurrently fetch sub-tables linked to the user account context
+            prisma.user.findUnique({
+                where: { id: userId },
+                select: {
+                    settings: true,
+                    earnedBadges: {
+                        orderBy: { earnedAt: "desc" }
+                    }
+                }
+            })
         ]);
 
-        // 3. Process and format query outputs into plain, wire-safe objects
         const [totalVisitors, publishedArticles, avgReadingTimeData] = adminMetrics;
         const avgReadingMinutes = avgReadingTimeData._avg?.duration
             ? (avgReadingTimeData._avg.duration / 60).toFixed(1)
@@ -76,6 +86,8 @@ export async function fetchDashboardDataAction(): Promise<DashboardDataPayload> 
             userRole,
             userName: session.user.name || "Developer",
             isAdminOrMod,
+            userSettings: userAccountData?.settings ? JSON.parse(JSON.stringify(userAccountData.settings)) : null,
+            earnedBadges: userAccountData?.earnedBadges ? JSON.parse(JSON.stringify(userAccountData.earnedBadges)) : [],
             bookmarks: JSON.parse(JSON.stringify(dbBookmarks)),
             featuredResources: JSON.parse(JSON.stringify(dbResources)),
             adminStats: {
@@ -93,6 +105,8 @@ export async function fetchDashboardDataAction(): Promise<DashboardDataPayload> 
             isAdminOrMod: false,
             bookmarks: [],
             featuredResources: [],
+            userSettings: null,
+            earnedBadges: [],
             adminStats: { totalVisitors: 0, publishedArticles: 0, avgReadingMinutes: "0.0" }
         };
     }

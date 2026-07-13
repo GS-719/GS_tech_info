@@ -3,7 +3,7 @@ import { fetchDashboardDataAction } from "@/src/app/actions/dashboard/dashboard"
 import { DashboardActions } from '@/src/components/dashboard/dashboardAction';
 import { Button } from '@/src/components/ui/button';
 import Link from 'next/link';
-import { ArrowRight, Bookmark, BookOpen, Clock, Zap, TrendingUp } from 'lucide-react';
+import { ArrowRight, Bookmark, BookOpen, Clock, Zap, TrendingUp, Award, Globe } from 'lucide-react';
 
 function formatTimeAgo(dateInput: Date | string): string {
   const date = new Date(dateInput);
@@ -53,22 +53,28 @@ export default async function DashboardPage() {
       <main className="flex-1">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-          {/* Page Header (WITH DYNAMIC INTERACTIVE PROFILE & PUBLISH ACTION INJECTED) */}
+          {/* Page Header */}
           <div className="py-12 border-b border-border/40 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
-              <h1 className="text-4xl font-bold tracking-tight mb-4">Learning Dashboard</h1>
+              <div className="flex items-center gap-3 mb-2">
+                <h1 className="text-4xl font-bold tracking-tight">Learning Dashboard</h1>
+                {/* 🌍 Active Interface Language Indicator Badge */}
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase rounded bg-muted border border-border/60 text-muted-foreground mt-1">
+                  <Globe className="w-3 h-3" /> Lang: {data.userSettings?.language || "en"}
+                </span>
+              </div>
               <p className="text-lg text-muted-foreground max-w-2xl">
                 Welcome back, {data.userName || "Developer"}. Track your progress, bookmarks, and continue where you left off.
               </p>
             </div>
 
-            {/* 👈 Renders the profile link button alongside the interactive modal controls */}
             <DashboardActions />
           </div>
 
           {/* Your Learning Progress Section */}
           <section className="py-12">
             <h2 className="text-2xl font-bold tracking-tight mb-8">Your Learning Progress</h2>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {statItems.map((item) => {
                 const Icon = item.icon;
@@ -85,6 +91,37 @@ export default async function DashboardPage() {
                   </div>
                 );
               })}
+            </div>
+
+            {/* ========================================================
+                🏅 UNLOCKED PORTFOLIO ACHIEVEMENTS FEED (New Added Section)
+               ======================================================== */}
+            <div className="mt-12 p-6 rounded-lg border border-border/50 bg-card/40 backdrop-blur-sm">
+              <h3 className="text-xl font-semibold tracking-tight mb-2 flex items-center gap-2">
+                <Award className="w-5 h-5 text-accent" /> Earned Milestones & Badges
+              </h3>
+              <p className="text-sm text-muted-foreground border-b border-border/30 pb-3 mb-4">Achievements unlocked through engineering quizzes and deep-dive technical readings.</p>
+
+              {!data.earnedBadges || data.earnedBadges.length === 0 ? (
+                <p className="text-xs text-muted-foreground italic py-2">Complete interactive platform challenges to unlock your first custom achievement badge.</p>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                  {data.earnedBadges.map((badge: any) => (
+                    <div
+                      key={badge.id}
+                      className="p-3 rounded-lg border border-border/40 bg-[#0d0d11]/50 hover:border-accent/30 transition-colors flex flex-col items-center text-center justify-center gap-1 group"
+                    >
+                      <Award className="w-7 h-7 text-accent drop-shadow-[0_0_6px_rgba(var(--accent),0.15)] group-hover:scale-105 transition-transform" />
+                      <span className="text-[11px] font-semibold text-foreground mt-1 truncate max-w-full capitalize">
+                        {badge.badgeId.replace(/_/g, " ")}
+                      </span>
+                      <span className="text-[9px] text-muted-foreground">
+                        {new Date(badge.earnedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Recent Activity */}
