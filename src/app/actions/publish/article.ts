@@ -20,55 +20,37 @@ export async function createDraftAction(contentType: "ARTICLE" | "GUIDE" | "RESO
 
     const userId = session.user.id;
 
-    // 1. Let Neon generate the absolute true unique ID first (e.g., cmrjedqq500022guc2u9ki6v2)
+    // A. Create the row context in Neon first to fetch our unique database ID
     const newDraft = await prisma.contentNode.create({
         data: {
             slug: `temp-draft-${Math.random().toString(36).substring(7)}`,
             type: contentType,
             status: "DRAFT",
             authorId: userId,
-            mdxPath: "PENDING_INITIALIZATION", // Temporary fallback string
+            mdxPath: "PENDING_INITIALIZATION", 
         },
     });
 
-    // 2. 💡 THE CRITICAL FIX: Build the path using the TRUE DB ID, not a random string!
+    // B. Build our absolute path tracking key using the generated database ID
     const alignedStorageKey = `drafts/${userId}/${newDraft.id}.mdx`;
 
-    // 3. Update Neon so the database matches the file path exactly
+    // C. Update Neon so the database points to the future file location path
     const finalDraft = await prisma.contentNode.update({
         where: { id: newDraft.id },
         data: { mdxPath: alignedStorageKey },
     });
 
-    // 4. Send the file to Supabase using that exact same aligned key
-    const initialMdxTemplate = `---
-        title: ""
-        description: ""
-        category: ""
-        tags: []
-        ---
-  
-        # Start writing here...`;
-
-    await storageClient.send(
-        new PutObjectCommand({
-            Bucket: BUCKET_NAME,
-            Key: alignedStorageKey,
-            Body: initialMdxTemplate,
-            ContentType: "text/markdown",
-        })
-    );
-
-    // Return the true database ID so the editor canvas uses it for autosaving
+    // 💡 FIXED: Supabase upload command removed completely from here.
+    // We return an empty initial body string directly to your editor state loop instead.
     return {
         success: true,
         draftId: finalDraft.id,
         mdxPath: finalDraft.mdxPath,
-        initialBody: initialMdxTemplate
+        initialBody: "" 
     };
 }
 
-// 2. PHASE 2 & 3: Quietly stream text modifications to Supabase & sync metrics to Neon
+// 2. PHASE 2 & 3: Autosave handles creation automatically on the very first typing sequence
 export async function autosaveDraftMetadataAction(
     draftId: string,
     data: { title: string; description: string; category: string; contentBody: string }
@@ -88,7 +70,8 @@ export async function autosaveDraftMetadataAction(
 
         const targetStorageKey = `drafts/${userId}/${draftId}.mdx`;
 
-        // A. Overwrite the raw MDX file body text inside Supabase Storage instantly
+        // 🏆 S3 PutObject handles file creation and overwrites identically.
+        // The first time this fires, it creates the file automatically!
         await storageClient.send(
             new PutObjectCommand({
                 Bucket: BUCKET_NAME,
@@ -98,7 +81,6 @@ export async function autosaveDraftMetadataAction(
             })
         );
 
-        // B. Keep Neon fast by updating only structural analytics metadata fields
         await prisma.contentNode.update({
             where: { id: draftId, authorId: userId },
             data: {
