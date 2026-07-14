@@ -12,8 +12,10 @@ export type DashboardDataPayload = {
     isAdminOrMod: boolean;
     bookmarks: any[];
     featuredResources: any[];
-    userSettings: any | null; // 👈 Added settings reference payload slot
-    earnedBadges: any[];     // 👈 Added achievements array slot
+    userSettings: any | null;
+    earnedBadges: any[];
+    userDrafts: any[];             
+    pendingReviewDrafts: any[];    
     adminStats: {
         totalVisitors: number;
         publishedArticles: number;
@@ -33,6 +35,8 @@ export async function fetchDashboardDataAction(): Promise<DashboardDataPayload> 
                 featuredResources: [],
                 userSettings: null,
                 earnedBadges: [],
+                userDrafts: [],
+                pendingReviewDrafts: [],
                 adminStats: { totalVisitors: 0, publishedArticles: 0, avgReadingMinutes: "0.0" }
             };
         }
@@ -42,7 +46,15 @@ export async function fetchDashboardDataAction(): Promise<DashboardDataPayload> 
         const isAdminOrMod = userRole === "ADMIN" || userRole === "MODERATOR";
 
         // High-Performance Parallel Query Execution
-        const [dbBookmarks, adminMetrics, dbResources, userAccountData] = await Promise.all([
+        const [
+            dbBookmarks, 
+            adminMetrics, 
+            dbResources, 
+            userAccountData, 
+            dbUserDrafts, 
+            dbPendingDrafts
+        ] = await Promise.all([
+            // A. Bookmarks
             prisma.bookmark.findMany({
                 where: { userId },
                 include: { contentNode: true },
@@ -50,6 +62,7 @@ export async function fetchDashboardDataAction(): Promise<DashboardDataPayload> 
                 take: 3,
             }),
 
+            // B. Admin Stats
             isAdminOrMod
                 ? Promise.all([
                     prisma.viewLog.count(),
@@ -58,13 +71,14 @@ export async function fetchDashboardDataAction(): Promise<DashboardDataPayload> 
                 ])
                 : Promise.resolve([0, 0, { _avg: { duration: 0 } }]),
 
+            // C. Featured Resources
             prisma.contentNode.findMany({
                 where: { type: "RESOURCE", status: "PUBLISHED", isFeatured: true },
                 orderBy: { publishedAt: "desc" },
                 take: 3,
             }),
 
-            // 👈 Concurrently fetch sub-tables linked to the user account context
+            // D. Settings & Badges
             prisma.user.findUnique({
                 where: { id: userId },
                 select: {
@@ -73,7 +87,34 @@ export async function fetchDashboardDataAction(): Promise<DashboardDataPayload> 
                         orderBy: { earnedAt: "desc" }
                     }
                 }
-            })
+            }),
+
+            // E. 💥 NEW: User's own non-published documents (DRAFT, PENDING_REVIEW, PUBLISHED, etc.)
+            prisma.contentNode.findMany({
+                where: {
+                    authorId: userId,
+                    status: { in: ["DRAFT", "PENDING_REVIEW", "PUBLISHED", "REJECTED"] }
+                },
+                orderBy: { updatedAt: "desc" }
+            }),
+
+            // F. 💥 NEW: Global Moderator Queue (Fetches all platform drafts needing approval)
+            isAdminOrMod
+                ? prisma.contentNode.findMany({
+                    where: { status: "PENDING_REVIEW" },
+                    include: {
+                        author: {
+                            select: {
+                                name: true,
+                                profile: {
+                                    select: { username: true }
+                                }
+                            }
+                        }
+                    },
+                    orderBy: { updatedAt: "desc" }
+                })
+                : Promise.resolve([])
         ]);
 
         const [totalVisitors, publishedArticles, avgReadingTimeData] = adminMetrics;
@@ -90,6 +131,8 @@ export async function fetchDashboardDataAction(): Promise<DashboardDataPayload> 
             earnedBadges: userAccountData?.earnedBadges ? JSON.parse(JSON.stringify(userAccountData.earnedBadges)) : [],
             bookmarks: JSON.parse(JSON.stringify(dbBookmarks)),
             featuredResources: JSON.parse(JSON.stringify(dbResources)),
+            userDrafts: JSON.parse(JSON.stringify(dbUserDrafts)),
+            pendingReviewDrafts: JSON.parse(JSON.stringify(dbPendingDrafts)),
             adminStats: {
                 totalVisitors,
                 publishedArticles,
@@ -107,6 +150,8 @@ export async function fetchDashboardDataAction(): Promise<DashboardDataPayload> 
             featuredResources: [],
             userSettings: null,
             earnedBadges: [],
+            userDrafts: [],
+            pendingReviewDrafts: [],
             adminStats: { totalVisitors: 0, publishedArticles: 0, avgReadingMinutes: "0.0" }
         };
     }

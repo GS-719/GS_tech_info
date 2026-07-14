@@ -3,7 +3,10 @@ import { fetchDashboardDataAction } from "@/src/app/actions/dashboard/dashboard"
 import { DashboardActions } from '@/src/components/dashboard/dashboardAction';
 import { Button } from '@/src/components/ui/button';
 import Link from 'next/link';
-import { ArrowRight, Bookmark, BookOpen, Clock, Zap, TrendingUp, Award, Globe } from 'lucide-react';
+import {
+  ArrowRight, Bookmark, BookOpen, Clock, Zap, TrendingUp,
+  Award, Globe, FileText, AlertCircle, Edit2, ShieldAlert
+} from 'lucide-react';
 
 function formatTimeAgo(dateInput: Date | string): string {
   const date = new Date(dateInput);
@@ -50,7 +53,7 @@ export default async function DashboardPage() {
 
   return (
     <>
-      <main className="flex-1">
+      <main className="flex-1 bg-[#050506] text-white min-h-screen pb-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
           {/* Page Header */}
@@ -70,6 +73,117 @@ export default async function DashboardPage() {
 
             <DashboardActions />
           </div>
+
+          {/* ========================================================
+              🛡️ MODERATOR & ADMIN REVIEW QUEUE (Conditional rendering)
+             ======================================================== */}
+          {data.isAdminOrMod && data.pendingReviewDrafts && data.pendingReviewDrafts.length > 0 && (
+            <section className="py-12 border-b border-border/40">
+              <div className="flex items-center gap-2 mb-8">
+                <ShieldAlert className="w-6 h-6 text-accent animate-pulse" />
+                <h2 className="text-2xl font-bold tracking-tight">Pending Approvals Queue</h2>
+                <span className="px-2 py-0.5 text-xs font-bold rounded bg-accent/20 text-accent font-mono border border-accent/30">
+                  {data.pendingReviewDrafts.length} Action Needed
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {data.pendingReviewDrafts.map((draft: any) => (
+                  <div
+                    key={draft.id}
+                    className="p-6 rounded-lg border border-accent/30 bg-accent/5 flex flex-col justify-between hover:border-accent/60 transition-all group"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-accent/20 text-accent">
+                          {draft.type}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground font-mono flex items-center gap-1">
+                          <Clock className="w-3 h-3" /> Awaiting Review
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-semibold text-white mb-2 line-clamp-2 capitalize">
+                        {draft.slug ? draft.slug.replace(/-/g, " ") : "Untitled Technical Content"}
+                      </h3>
+                      <p className="text-xs text-muted-foreground mb-4">
+                        Submitted by <span className="text-accent">@{draft.author?.profile?.username || draft.author?.name || "anonymous"}</span> • {formatTimeAgo(draft.updatedAt)}
+                      </p>
+                    </div>
+
+                    <Link href={`/dashboard/review/${draft.id}`} className="w-full mt-4">
+                      <Button size="sm" className="w-full gap-2 bg-accent text-accent-foreground hover:opacity-90">
+                        Review Document <ArrowRight className="w-4 h-4" />
+                      </Button>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* ========================================================
+              ✍️ AUTHOR WORKSPACE: DRAFTS & ACTIVE SUBMISSIONS
+             ======================================================== */}
+          <section className="py-12 border-b border-border/40">
+            <h2 className="text-2xl font-bold tracking-tight mb-8">Your Active Drafts & Workspace</h2>
+
+            {data.userDrafts && data.userDrafts.length === 0 ? (
+              <div className="p-8 text-center text-sm text-muted-foreground border border-dashed border-border/40 rounded-lg bg-card/20">
+                You don't have any active drafts. Click <strong className="text-accent">"Publish Content"</strong> in the top header to start!
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {data.userDrafts.map((draft: any) => {
+                  // Setup dynamic visual parameters depending on state machine steps
+                  let statusLabel = "Draft";
+                  let statusColor = "bg-muted border-border text-muted-foreground";
+
+                  if (draft.status === "PENDING_REVIEW") {
+                    statusLabel = "Under Review";
+                    statusColor = "bg-amber-500/10 border-amber-500/20 text-amber-400";
+                  } else if (draft.status === "CHANGES_REQUESTED") {
+                    statusLabel = "Changes Requested";
+                    statusColor = "bg-orange-500/10 border-orange-500/20 text-orange-400";
+                  } else if (draft.status === "REJECTED") {
+                    statusLabel = "Rejected";
+                    statusColor = "bg-destructive/10 border-destructive/20 text-destructive";
+                  }
+
+                  return (
+                    <div
+                      key={draft.id}
+                      className="p-6 rounded-lg border border-border/50 bg-card/60 flex flex-col justify-between hover:border-accent/40 hover:bg-muted/30 transition-all group"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-white/5 text-muted-foreground">
+                            {draft.type}
+                          </span>
+                          <span className={`text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded border ${statusColor}`}>
+                            {statusLabel}
+                          </span>
+                        </div>
+                        <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-accent transition-colors line-clamp-2 capitalize">
+                          {draft.slug ? draft.slug.replace(/-/g, " ") : "Untitled Content"}
+                        </h3>
+                        <p className="text-xs text-muted-foreground mb-4">
+                          Last edited {formatTimeAgo(draft.updatedAt)} • {draft.wordCount || 0} words
+                        </p>
+                      </div>
+
+                      <div className="flex gap-2 mt-4">
+                        <Link href={`/dashboard/publish/${draft.type.toLowerCase()}?draftId=${draft.id}`} className="flex-1">
+                          <Button size="sm" variant="outline" className="w-full gap-2 border-border/50 hover:bg-white/5">
+                            <Edit2 className="w-3.5 h-3.5" /> Edit Workspace
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </section>
 
           {/* Your Learning Progress Section */}
           <section className="py-12">
@@ -94,7 +208,7 @@ export default async function DashboardPage() {
             </div>
 
             {/* ========================================================
-                🏅 UNLOCKED PORTFOLIO ACHIEVEMENTS FEED (New Added Section)
+                🏅 UNLOCKED PORTFOLIO ACHIEVEMENTS FEED
                ======================================================== */}
             <div className="mt-12 p-6 rounded-lg border border-border/50 bg-card/40 backdrop-blur-sm">
               <h3 className="text-xl font-semibold tracking-tight mb-2 flex items-center gap-2">
@@ -197,7 +311,7 @@ export default async function DashboardPage() {
           {/* Admin Dashboard Preview */}
           {data.isAdminOrMod && (
             <section className="py-12 border-t border-border/40">
-              <h2 className="text-2xl font-bold tracking-tight mb-8">Admin Dashboard</h2>
+              <h2 className="text-2xl font-bold tracking-tight mb-8">Admin Dashboard Summary</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
                   {
