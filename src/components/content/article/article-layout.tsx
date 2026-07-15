@@ -1,8 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Header } from '@/src/components/layout/header'
-import { Footer } from '@/src/components/layout/footer'
 import { ChevronUp } from 'lucide-react'
 
 interface Heading {
@@ -89,7 +87,6 @@ export function ArticleLayout({
 
   return (
     <>
-      <Header />
       <main className="flex-1">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -180,7 +177,6 @@ export function ArticleLayout({
           </div>
         </div>
       </main>
-      <Footer />
     </>
   )
 }

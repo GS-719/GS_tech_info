@@ -1,62 +1,65 @@
-import { ArticleCard } from '@/src/components/content/article/article-card'
+import { getPublishedTutorialsAction } from "@/src/app/actions/publish/tutorial";
+import { ArticleCard } from '@/src/components/content/article/article-card';
+import { Terminal, Code2 } from 'lucide-react';
 
-const tutorials = [
-  {
-    slug: 'build-real-time-chat-app',
-    title: 'Build a Real-Time Chat Application',
-    excerpt: 'Learn to build a real-time chat app with WebSockets. Covers authentication, message persistence, and user management.',
-    category: 'Backend',
-    readingTime: '20 min read',
-    date: 'March 15, 2024',
-  },
-  {
-    slug: 'create-responsive-dashboard',
-    title: 'Create a Responsive Dashboard',
-    excerpt: 'Build a fully responsive admin dashboard with charts, tables, and real-time data updates.',
-    category: 'Frontend',
-    readingTime: '16 min read',
-    date: 'March 14, 2024',
-  },
-  {
-    slug: 'deploy-nextjs-to-production',
-    title: 'Deploy Next.js to Production',
-    excerpt: 'Complete guide to deploying Next.js applications. Covers optimization, environment setup, and monitoring.',
-    category: 'DevOps',
-    readingTime: '14 min read',
-    date: 'March 13, 2024',
-  },
-]
+export default async function TutorialsPage() {
+  const result = await getPublishedTutorialsAction();
+  const publishedTutorials = result.tutorials || [];
 
-export default function TutorialsPage() {
   return (
     <>
-      <main className="flex-1">
-        {/* Page Header */}
+      <main className="flex-1 bg-[#050506] text-white min-h-screen pb-24">
+
+        {/* Section Header */}
         <section className="relative border-b border-border/40 py-12">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-balance">
-              Tutorials
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-balance flex items-center gap-3">
+              <Terminal className="w-9 h-9 text-accent" /> Tutorials Hub
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl text-balance">
-              Hands-on learning experiences to build real-world projects.
+              Hands-on code-along implementations, syntax dissection, and real-world system building exercises.
             </p>
           </div>
         </section>
 
-        {/* Tutorials Grid */}
+        {/* Dynamic Tutorials Content Grid */}
         <section className="relative py-12">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {tutorials.map((tutorial) => (
-                <ArticleCard
-                  key={tutorial.slug}
-                  {...tutorial}
-                />
-              ))}
-            </div>
+            {publishedTutorials.length === 0 ? (
+              <div className="py-20 text-center border border-dashed border-border/40 rounded-xl bg-card/10">
+                <Code2 className="w-8 h-8 text-muted-foreground/40 mx-auto mb-3 animate-pulse" />
+                <p className="text-sm font-medium text-muted-foreground">
+                  No step-by-step programming tutorials published yet. Check back soon!
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {publishedTutorials.map((tutorial: any) => {
+                  const uiProps = {
+                    slug: tutorial.slug,
+                    title: tutorial.slug.replace(/-/g, " "),
+                    excerpt: tutorial.description || "Master the practical syntax and architectural constraints outlined in this modular technical workspace tutorial.",
+                    category: tutorial.categoryId || "Next.js",
+                    readingTime: `${tutorial.readingTime || 15} min build`,
+                    date: tutorial.publishedAt
+                      ? new Date(tutorial.publishedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+                      : "Recent Release",
+                  };
+
+                  return (
+                    <ArticleCard
+                      key={tutorial.id} // 🏆 Unique Key constraint requirement passed correctly
+                      {...uiProps}
+                      destination={`/tutorial/${tutorial.slug}`} // 🏆 Internal prop avoids <a> tag nesting fault
+                    />
+                  );
+                })}
+              </div>
+            )}
           </div>
         </section>
+
       </main>
     </>
-  )
+  );
 }

@@ -2,13 +2,14 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
 interface ArticleCardProps {
-  slug: string
-  title: string
-  excerpt: string
-  category: string
-  readingTime: string
-  date: string
-  featured?: boolean
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  readingTime: string;
+  date: string;
+  featured?: boolean;
+  destination: string; 
 }
 
 export function ArticleCard({
@@ -18,10 +19,11 @@ export function ArticleCard({
   category,
   readingTime,
   date,
-  featured = false,
+  featured,
+  destination,
 }: ArticleCardProps) {
   return (
-    <Link href={`/articles/${slug}`}>
+    <Link href={destination}>
       <article
         className={`group h-full rounded-lg border border-border/50 bg-card hover:border-accent/50 hover:bg-muted/30 transition-all overflow-hidden ${
           featured

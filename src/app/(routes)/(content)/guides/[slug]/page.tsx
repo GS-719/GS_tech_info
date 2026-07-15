@@ -23,11 +23,11 @@ async function fetchRawMdxFromGitHub(mdxFilePath: string, slug: string): Promise
         method: "GET",
         headers: {
             "Authorization": `token ${token}`,
-            "Accept": "application/vnd.github.v3.raw", // Direct streaming text skip payload encoding
+            "Accept": "application/vnd.github.v3.raw", // Directly stream text content, bypassing base64 objects
         },
-        // 🏆 THE PINPOINT CACHE TAG CONFIGURATION
+        // 🏆 ON-DEMAND REVALIDATION TAG CONFIGURATION
         next: {
-            tags: [`content-node-${slug}`], // Hooks this specific fetch into your custom API cache clear pipeline
+            tags: [`content-node-${slug}`], // Labels this unique layout page block for target tag-purges
             revalidate: 86400 // Safety background fallback lifespan: 24 Hours
         }
     });
@@ -43,67 +43,67 @@ async function fetchRawMdxFromGitHub(mdxFilePath: string, slug: string): Promise
 export async function generateMetadata({ params }: PageProps) {
     const { slug } = await params;
 
-    // Direct read against structural database tables to construct tags instantly
-    const articleNode = await prisma.contentNode.findFirst({
+    // Read directly from database indexes to render metadata parameters instantly
+    const guideNode = await prisma.contentNode.findFirst({
         where: {
             slug: slug,
-            type: "ARTICLE",
+            type: "GUIDE",
             status: "PUBLISHED"
         }
     });
 
-    if (!articleNode) {
+    if (!guideNode) {
         return {};
     }
 
     return {
-        title: `${articleNode.slug.replace(/-/g, " ")} - GS Tech Info`,
-        description: articleNode.description || 'Technical Article Deep Dive',
+        title: `${guideNode.slug.replace(/-/g, " ")} - GS Tech Info`,
+        description: guideNode.description || 'Technical Guide Deep Dive',
     };
 }
 
-// 2. Dynamic Article Page Server Component
-export default async function ArticlePage({ params }: PageProps) {
+// 2. Dynamic Guide Page Server Component
+export default async function GuidePage({ params }: PageProps) {
     const { slug } = await params;
 
-    // A. Query the Neon database structure first to verify metadata parameters matches
-    const articleNode = await prisma.contentNode.findFirst({
+    // A. Verify metadata validity against the database
+    const guideNode = await prisma.contentNode.findFirst({
         where: {
             slug: slug,
-            type: "ARTICLE",
+            type: "GUIDE",
             status: "PUBLISHED"
         }
     });
 
-    // Safely guard against users visiting an invalid or unapproved slug path layout
-    if (!articleNode) {
+    // Safeguard against users loading draft or non-existent guide tracks
+    if (!guideNode) {
         notFound();
     }
 
     let fileContent = "";
     try {
-        // B. Stream the raw MDX document file text straight out of your GitHub repository tree
-        fileContent = await fetchRawMdxFromGitHub(articleNode.mdxPath, slug);
+        // B. Grab plain text source straight from your production GitHub tree archive
+        fileContent = await fetchRawMdxFromGitHub(guideNode.mdxPath, slug);
     } catch (error) {
         console.error("Failed to fetch markdown file from production repository storage:", error);
         notFound();
     }
 
-    // C. Compile source using your next-mdx-remote configuration layout engine
+    // C. Compile raw text document streams through next-mdx-remote configurations
     const { content, frontmatter } = await getMDXContent(fileContent);
 
     return (
         <ArticleLayout
-            title={(frontmatter.title as string) || articleNode.slug.replace(/-/g, " ")}
+            title={(frontmatter.title as string) || guideNode.slug.replace(/-/g, " ")}
             author={(frontmatter.author as string) || 'Gurjot'}
             date={
                 (frontmatter.date as string) ||
-                (articleNode.publishedAt
-                    ? new Date(articleNode.publishedAt).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })
+                (guideNode.publishedAt
+                    ? new Date(guideNode.publishedAt).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })
                     : '2026')
             }
-            readingTime={`${articleNode.readingTime || 10} min read`}
-            category={articleNode.categoryId || 'Tech'}
+            readingTime={`${guideNode.readingTime || 10} min read`}
+            category={guideNode.categoryId || 'Tech'}
         >
             {content}
         </ArticleLayout>
@@ -113,9 +113,9 @@ export default async function ArticlePage({ params }: PageProps) {
 // 3. Performance Optimization: Pre-render content paths from Neon database context maps at build time
 export async function generateStaticParams() {
     try {
-        const articles = await prisma.contentNode.findMany({
+        const guides = await prisma.contentNode.findMany({
             where: {
-                type: "ARTICLE",
+                type: "GUIDE",
                 status: "PUBLISHED"
             },
             select: {
@@ -123,8 +123,8 @@ export async function generateStaticParams() {
             }
         });
 
-        return articles.map((article) => ({
-            slug: article.slug,
+        return guides.map((guide) => ({
+            slug: guide.slug,
         }));
     } catch (error) {
         console.error("Failed to pre-render dynamic parameters during build matrix assembly:", error);
